@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.ankwinam.myapplication">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".MapActivity" />
+        <activity
+            android:name=".Tema_NaviActivity"
+            android:label="테마별 산책로"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Local_NaviActivity"
+            android:label="지역별 산책로"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".WritePageActivity" />
+        <activity
+            android:name=".TemaResultActivity"
+            android:label="자세히"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Choice_NaviActivity"
+            android:label="홈"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".JJim_NaviActivity"
+            android:label="찜한산책로"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+    </application>
+
+</manifest>
