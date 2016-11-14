@@ -13,15 +13,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -31,38 +27,37 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 /**
  * Created by An Kwi nam on 2016-09-08.
  */
 public class Local_NaviActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    ArrayList<HashMap<String,String>> famousList;
-    private ListView lv;
-
-
-
+    private String[] Areagu;
+    static final String BASE_URL="https://today-walks-lee-s-h.c9users.io";
 
     String myJSON;
     private static final String TAG_RESULTS="result";
-    private static final String TAG_ID = "id";
-    private static final String TAG_NAME = "name";
-    private static final String TAG_ADD ="address";
-    ArrayList<Tema> h_info_list;
+    ArrayList<Walk_Info> h_info_list;
 
     JSONArray peoples = null;
     ArrayList<HashMap<String, String>> personList;
 
     private ListView list;
-    TemaAdapter myadapter;
+    WalkListAdapter myadapter;
+
+
 
 
     @Override
@@ -70,21 +65,34 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.local_navigation);
 
+        Areagu = new String[]{"강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구",
+                "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구", "서초구", "성북구",
+                "송파구", "양천구", "영등포구", "용산구", "은평구", "종로구", "중구", "중랑구"};
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //지역별 스크롤 스피너 매핑 부분
-        String[] localspnnier = getResources().getStringArray(R.array.Localspnnier);
+        String[] localspnnier = getResources().getStringArray(R.array.Local_spinner);
         ArrayAdapter<String> local_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, localspnnier);
-        Spinner spnnier = (Spinner) findViewById(R.id.local_spinner);
+        Spinner spnnier = (Spinner) findViewById(R.id.Distence_spinner);
         spnnier.setAdapter(local_adapter);
 
+        //지역별 스피너 클릭리스너
         spnnier.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
                     @Override
-                    public void onItemSelected
-                            (AdapterView<?> parent, View view, int position, long id) {
-                        print(view, position); //아이템을 선택하면 print가 실행된다 (이 부분 수정해서 리스트 보여주기)
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                        //한글 parameter 인코딩
+                        String gu_parmeter = "";
+                        try {
+                            gu_parmeter = java.net.URLEncoder.encode(new String(Areagu[position].getBytes("UTF-8")));
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        //get ListView
+                        getData(BASE_URL+"/list_index.php?Area=" + gu_parmeter);
                     }
 
                     @Override
@@ -101,15 +109,11 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        getData("https://today-walks-lee-s-h.c9users.io/list_index.php");
-
-
     }
 
 //수정해야할 print 함수 부분
     public void print(View v, int position){
-        Spinner sp = (Spinner)findViewById(R.id.local_spinner);
+        Spinner sp = (Spinner)findViewById(R.id.Distence_spinner);
         String res = "";
         if(sp.getSelectedItemPosition()>0){
             res=(String)sp.getAdapter().getItem(sp.getSelectedItemPosition());
@@ -179,24 +183,71 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
         return true;
     }
 
+    public void getList(String[] param){
+        class GetList extends AsyncTask<String, Void, Bitmap> {
+            String name;
+            String area;
+            String level;
+            String image_url;
 
+            @Override
+            protected Bitmap doInBackground(String... params) {
+
+                name = params[0];
+                area = params[1];
+                level = params[2];
+
+                try {
+                    image_url = URLEncoder.encode(name, "UTF-8");
+                    URL url = new URL(BASE_URL + "/walks/" + image_url + ".jpg");
+                    Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+
+                    return bmp;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Bitmap bmp){
+                h_info_list.add(new Walk_Info(name, area, level, bmp));
+            }
+        }
+        GetList g = new GetList();
+        g.execute(param);
+    }
+
+//리스트 뷰
     protected void showList(){
         try {
             list = (ListView) findViewById(R.id.listView_area);
             JSONObject jsonObj = new JSONObject(myJSON);
             peoples = jsonObj.getJSONArray(TAG_RESULTS);
-            h_info_list = new ArrayList<Tema>();
+            h_info_list = new ArrayList<Walk_Info>();
 
             for(int i=0;i<peoples.length();i++){
                 JSONObject c = peoples.getJSONObject(i);
                 String id = c.getString("walk_name");
-                String name = c.getString("area");
-                String address = c.getString("level");
+                String name = "자치구" + c.getString("area");
+                String address = "코스레벨" + c.getString("level");
+                String[] param = {id, name, address};
 
-                h_info_list.add(new Tema(id,name,address, BitmapFactory.decodeResource(getResources(), R.drawable.time)));
+                getList(param);
+
+//                String image_url = URLEncoder.encode(id,"UTF-8");
+//
+//                Log.e("Check",BASE_URL+ "/walks/" + image_url + ".jpg");
+//
+//                URL url = new URL(BASE_URL+ "/walks/" + image_url + ".jpg");
+//                Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//
+//                h_info_list.add(new Walk_Info(id,name,address, BitmapFactory.decodeResource(getResources(), R.drawable.time)));
+//                h_info_list.add(new Walk_Info(id,name,address, getBitmapFromURL(BASE_URL+ "/walks/" + image_url + ".jpg")));
             }
 
-            myadapter = new TemaAdapter(getApplicationContext(),R.layout.tema_info, h_info_list);
+
+            myadapter = new WalkListAdapter(getApplicationContext(),R.layout.tema_info, h_info_list);
             list.setAdapter(myadapter);
 
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -217,12 +268,18 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
         } catch (JSONException e) {
             e.printStackTrace();
         }
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        } catch (MalformedURLException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
     public void getData(String url){
         class GetDataJSON extends AsyncTask<String, Void, String> {
-
             @Override
             protected String doInBackground(String... params) {
 
@@ -257,8 +314,5 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
         GetDataJSON g = new GetDataJSON();
         g.execute(url);
     }
-
-
-
 
 }

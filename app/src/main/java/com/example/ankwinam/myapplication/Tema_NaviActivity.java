@@ -10,18 +10,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class Tema_NaviActivity extends AppCompatActivity
@@ -29,9 +25,9 @@ public class Tema_NaviActivity extends AppCompatActivity
 
     boolean bLog = false; // false : 로그아웃 상태
     private ListView listView;
-    ArrayList<Tema> h_info_list;
-    TemaAdapter myadapter;
-    Tema myLocal1,myLocal2,myLocal3;
+    ArrayList<Walk_Info> h_info_list;
+    WalkListAdapter myadapter;
+    Walk_Info myLocal1,myLocal2,myLocal3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +81,10 @@ public class Tema_NaviActivity extends AppCompatActivity
 
         //리스트 뷰 구현
         listView = (ListView)findViewById(R.id.listView_tema);
-        myLocal1 = new Tema("송지은", "여", "26", BitmapFactory.decodeResource(getResources(), R.drawable.time));
-        myLocal2 = new Tema("박보람", "여", "22", BitmapFactory.decodeResource(getResources(), R.drawable.time));
-        myLocal3 = new Tema("설현", "여", "21", BitmapFactory.decodeResource(getResources(), R.drawable.time));
-        h_info_list = new ArrayList<Tema>();
+        myLocal1 = new Walk_Info("송지은", "여", "26", BitmapFactory.decodeResource(getResources(), R.drawable.time));
+        myLocal2 = new Walk_Info("박보람", "여", "22", BitmapFactory.decodeResource(getResources(), R.drawable.time));
+        myLocal3 = new Walk_Info("설현", "여", "21", BitmapFactory.decodeResource(getResources(), R.drawable.time));
+        h_info_list = new ArrayList<Walk_Info>();
         h_info_list.add(myLocal1);
         h_info_list.add(myLocal2);
         h_info_list.add(myLocal3);
@@ -99,7 +95,7 @@ public class Tema_NaviActivity extends AppCompatActivity
         h_info_list.add(myLocal2);
         h_info_list.add(myLocal3);
 
-        myadapter = new TemaAdapter(getApplicationContext(),R.layout.tema_info, h_info_list);
+        myadapter = new WalkListAdapter(getApplicationContext(),R.layout.tema_info, h_info_list);
         listView.setAdapter(myadapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

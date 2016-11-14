@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="Localspnnier">
-        <item>[지역 선택]</item>
+    <string-array name="Local_spinner">
         <item>강남구</item>
         <item>강동구</item>
         <item>강북구</item>

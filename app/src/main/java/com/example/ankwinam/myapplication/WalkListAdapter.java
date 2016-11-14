@@ -14,13 +14,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class TemaAdapter extends BaseAdapter {
+public class WalkListAdapter extends BaseAdapter {
     private Context mContext = null;
     private int layout = 0;
-    private ArrayList<Tema> data = null;
+    private ArrayList<Walk_Info> data = null;
     private LayoutInflater inflater = null;
 
-    public TemaAdapter(Context c, int l, ArrayList<Tema> d) {
+    public WalkListAdapter(Context c, int l, ArrayList<Walk_Info> d) {
         this.mContext = c;
         this.layout = l;
         this.data = d;
