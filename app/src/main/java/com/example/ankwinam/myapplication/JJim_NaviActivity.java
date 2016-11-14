@@ -29,7 +29,7 @@ import java.util.HashMap;
 
 public class JJim_NaviActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    /////////////////xptmxptmxmtpdmtpm
+    /////////////////xptmxptmxmtpdmtpmㅗㅗ롤호로로
     ArrayList<HashMap<String,String>> jjimList;
     private ListView lv;
     @Override
