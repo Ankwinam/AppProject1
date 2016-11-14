@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 public class Choice_NaviActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+// 바꿈
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
