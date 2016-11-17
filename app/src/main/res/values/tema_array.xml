@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="Temaspnnier">
-        <item>[테마 선택]</item>
         <item>걷기 좋은 길</item>
         <item>자전거 타기 좋은 길</item>
         <item>유아동반 좋은 길</item>

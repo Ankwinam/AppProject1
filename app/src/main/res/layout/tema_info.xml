@@ -9,7 +9,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/Local_image"
+            android:id="@+id/Walk_image"
             android:layout_width="95dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
@@ -30,7 +30,7 @@
                 android:layout_marginTop="10dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Large Text"
-                android:id="@+id/Local_name" />
+                android:id="@+id/Walk_name" />
 
             <TextView
                 android:textColor="#111111"
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Medium Text"
-                android:id="@+id/Local_gender" />
+                android:id="@+id/Walk_gu" />
 
             <TextView
                 android:textColor="#111111"
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Medium Text"
-                android:id="@+id/Local_age" />
+                android:id="@+id/Walk_level" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

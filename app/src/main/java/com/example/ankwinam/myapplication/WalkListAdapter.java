@@ -5,6 +5,7 @@ package com.example.ankwinam.myapplication;
  */
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,16 +49,21 @@ public class WalkListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
+        RecyclerView.ViewHolder h;
 
         if(convertView == null) {
             convertView = inflater.inflate(this.layout, parent, false);
         }
-        ImageView Hu_image = (ImageView) convertView.findViewById(R.id.Local_image);
-        TextView Hu_name = (TextView) convertView.findViewById(R.id.Local_name);
-        TextView Hu_gender = (TextView) convertView.findViewById(R.id.Local_gender);
-        TextView Hu_age = (TextView) convertView.findViewById(R.id.Local_age);
+        ImageView Hu_image = (ImageView) convertView.findViewById(R.id.Walk_image);
+        TextView Hu_name = (TextView) convertView.findViewById(R.id.Walk_name);
+        TextView Hu_gender = (TextView) convertView.findViewById(R.id.Walk_gu);
+        TextView Hu_age = (TextView) convertView.findViewById(R.id.Walk_level);
 
-        Hu_image.setImageBitmap(data.get(position).image);
+        if(data.get(position).getImage() != null){
+            Hu_image.setImageBitmap(data.get(position).image);
+        }else{
+            Hu_image.setImageResource(R.drawable.ic_menu_gallery);
+        }
         Hu_name.setText(data.get(position).walk_name);
         Hu_gender.setText(data.get(position).area);
         Hu_age.setText(data.get(position).level);

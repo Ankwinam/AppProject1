@@ -1,6 +1,8 @@
 package com.example.ankwinam.myapplication;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
@@ -18,21 +20,41 @@ import android.graphics.BitmapFactory;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class Tema_NaviActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class Tema_NaviActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private String[] Tema;
+    static final String BASE_URL="https://today-walks-lee-s-h.c9users.io";
 
-    boolean bLog = false; // false : 로그아웃 상태
-    private ListView listView;
+    String myJSON;
+    private static final String TAG_RESULTS="result";
     ArrayList<Walk_Info> h_info_list;
+
+    JSONArray peoples = null;
+    ArrayList<HashMap<String, String>> personList;
+
+    private ListView list;
     WalkListAdapter myadapter;
-    Walk_Info myLocal1,myLocal2,myLocal3;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tema_navigation);
+
+        Tema = new String[]{"걷기 좋은 길","자전거 타기 좋은 길","유아동반 좋은 길","애완동물 좋은 길"};
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,9 +68,16 @@ public class Tema_NaviActivity extends AppCompatActivity
         spnnier.setOnItemSelectedListener(
                 new AdapterView.OnItemSelectedListener() {
                     @Override
-                    public void onItemSelected
-                            (AdapterView<?> parent, View view, int position, long id) {
-                        print(view, position); //아이템을 선택하면 print가 실행된다 (이 부분 수정해서 리스트 보여주기)
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        //한글 parameter 인코딩
+                        String gu_parmeter = "";
+                        try {
+                            gu_parmeter = java.net.URLEncoder.encode(new String(Tema[position].getBytes("UTF-8")));
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        //get ListView
+                        getData(BASE_URL+"/list_index2.php?Tema=" + gu_parmeter);
                     }
 
                     @Override
@@ -79,42 +108,41 @@ public class Tema_NaviActivity extends AppCompatActivity
 
 
 
-        //리스트 뷰 구현
-        listView = (ListView)findViewById(R.id.listView_tema);
-        myLocal1 = new Walk_Info("송지은", "여", "26", BitmapFactory.decodeResource(getResources(), R.drawable.time));
-        myLocal2 = new Walk_Info("박보람", "여", "22", BitmapFactory.decodeResource(getResources(), R.drawable.time));
-        myLocal3 = new Walk_Info("설현", "여", "21", BitmapFactory.decodeResource(getResources(), R.drawable.time));
-        h_info_list = new ArrayList<Walk_Info>();
-        h_info_list.add(myLocal1);
-        h_info_list.add(myLocal2);
-        h_info_list.add(myLocal3);
-        h_info_list.add(myLocal1);
-        h_info_list.add(myLocal2);
-        h_info_list.add(myLocal3);
-        h_info_list.add(myLocal1);
-        h_info_list.add(myLocal2);
-        h_info_list.add(myLocal3);
-
-        myadapter = new WalkListAdapter(getApplicationContext(),R.layout.tema_info, h_info_list);
-        listView.setAdapter(myadapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-//                Intent intent = new Intent(getApplicationContext(), TemaResultActivity.class); // 다음넘어갈 화면
-//                Bitmap sendBitmap = h_info_list.get(position).image;
+//        //리스트 뷰 구현
+//        listView = (ListView)findViewById(R.id.listView_tema);
+//        myLocal1 = new Walk_Info("송지은", "여", "26", BitmapFactory.decodeResource(getResources(), R.drawable.time));
+//        myLocal2 = new Walk_Info("박보람", "여", "22", BitmapFactory.decodeResource(getResources(), R.drawable.time));
+//        myLocal3 = new Walk_Info("설현", "여", "21", BitmapFactory.decodeResource(getResources(), R.drawable.time));
+//        h_info_list = new ArrayList<Walk_Info>();
+//        h_info_list.add(myLocal1);
+//        h_info_list.add(myLocal2);
+//        h_info_list.add(myLocal3);
+//        h_info_list.add(myLocal1);
+//        h_info_list.add(myLocal2);
+//        h_info_list.add(myLocal3);
+//        h_info_list.add(myLocal1);
+//        h_info_list.add(myLocal2);
+//        h_info_list.add(myLocal3);
 //
-//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//                byte[] byteArray = stream.toByteArray();
+//        myadapter = new WalkListAdapter(getApplicationContext(),R.layout.tema_info, h_info_list);
+//        listView.setAdapter(myadapter);
 //
-//                intent.putExtra("image",byteArray);
-//                startActivity(intent);
-                Intent detail_go = new Intent(Tema_NaviActivity.this, ScrollingActivity.class);
-                startActivity(detail_go);
-            }
-        });
-
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+////                Intent intent = new Intent(getApplicationContext(), TemaResultActivity.class); // 다음넘어갈 화면
+////                Bitmap sendBitmap = h_info_list.get(position).image;
+////
+////                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+////                sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+////                byte[] byteArray = stream.toByteArray();
+////
+////                intent.putExtra("image",byteArray);
+////                startActivity(intent);
+//                Intent detail_go = new Intent(Tema_NaviActivity.this, ScrollingActivity.class);
+//                startActivity(detail_go);
+//            }
+//        });
     }
 
     //수정해야할 print 함수 부분
@@ -181,5 +209,94 @@ public class Tema_NaviActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    //리스트 뷰
+    protected void showList(){
+        try {
+            list = (ListView) findViewById(R.id.listView_tema);
+            JSONObject jsonObj = new JSONObject(myJSON);
+            peoples = jsonObj.getJSONArray(TAG_RESULTS);
+            h_info_list = new ArrayList<Walk_Info>();
+
+            for(int i=0;i<peoples.length();i++){
+                JSONObject c = peoples.getJSONObject(i);
+                String id = c.getString("walk_name");
+                String name = "자치구" + c.getString("area");
+                String address = "코스레벨" + c.getString("level");
+
+                String image_url = URLEncoder.encode(id,"UTF-8");
+                image_url = image_url.replace("+","%20");
+                String imgUrl = BASE_URL+ "/walks/" + image_url + ".jpg";
+
+                Walk_Info data = new Walk_Info(id, name, address, imgUrl);
+                h_info_list.add(data);
+            }
+            myadapter = new WalkListAdapter(getApplicationContext(),R.layout.tema_info, h_info_list);
+            list.setAdapter(myadapter);
+
+            for(Walk_Info each : h_info_list){
+                each.loadImage(myadapter);
+            }
+
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                    Intent intent = new Intent(getApplicationContext(), TemaResultActivity.class); // 다음넘어갈 화면
+                    Bitmap sendBitmap = h_info_list.get(position).image;
+
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] byteArray = stream.toByteArray();
+
+                    intent.putExtra("image",byteArray);
+                    startActivity(intent);
+
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getData(String url){
+        class GetDataJSON extends AsyncTask<String, Void, String> {
+            @Override
+            protected String doInBackground(String... params) {
+
+                String uri = params[0];
+                BufferedReader bufferedReader = null;
+                try {
+                    URL url = new URL(uri);
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    StringBuilder sb = new StringBuilder();
+
+                    bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+                    String json;
+                    while((json = bufferedReader.readLine())!= null){
+                        sb.append(json+"\n");
+                    }
+
+                    return sb.toString().trim();
+
+                }catch(Exception e){
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(String result){
+
+                myJSON=result;
+                showList();
+            }
+        }
+        GetDataJSON g = new GetDataJSON();
+        g.execute(url);
     }
 }

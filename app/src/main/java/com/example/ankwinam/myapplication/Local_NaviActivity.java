@@ -57,9 +57,6 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
     private ListView list;
     WalkListAdapter myadapter;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,8 +120,6 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
         }
     }
 
-
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -134,7 +129,6 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
             super.onBackPressed();
         }
     }
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -183,40 +177,6 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
         return true;
     }
 
-    public void getList(String[] param){
-        class GetList extends AsyncTask<String, Void, Bitmap> {
-            String name;
-            String area;
-            String level;
-            String image_url;
-
-            @Override
-            protected Bitmap doInBackground(String... params) {
-
-                name = params[0];
-                area = params[1];
-                level = params[2];
-
-                try {
-                    image_url = URLEncoder.encode(name, "UTF-8");
-                    URL url = new URL(BASE_URL + "/walks/" + image_url + ".jpg");
-                    Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-
-                    return bmp;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return null;
-            }
-            @Override
-            protected void onPostExecute(Bitmap bmp){
-                h_info_list.add(new Walk_Info(name, area, level, bmp));
-            }
-        }
-        GetList g = new GetList();
-        g.execute(param);
-    }
 
 //리스트 뷰
     protected void showList(){
@@ -231,51 +191,50 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
                 String id = c.getString("walk_name");
                 String name = "자치구" + c.getString("area");
                 String address = "코스레벨" + c.getString("level");
-                String[] param = {id, name, address};
 
-                getList(param);
+//                String replaceString = id.replace(" ", "%20");
+                String image_url = URLEncoder.encode(id,"UTF-8");
+                image_url = image_url.replace("+","%20");
+                String imgUrl = BASE_URL+ "/walks/" + image_url + ".jpg";
 
-//                String image_url = URLEncoder.encode(id,"UTF-8");
-//
-//                Log.e("Check",BASE_URL+ "/walks/" + image_url + ".jpg");
-//
-//                URL url = new URL(BASE_URL+ "/walks/" + image_url + ".jpg");
+                Walk_Info data = new Walk_Info(id, name, address, imgUrl);
+                h_info_list.add(data);
 //                Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-//
 //                h_info_list.add(new Walk_Info(id,name,address, BitmapFactory.decodeResource(getResources(), R.drawable.time)));
 //                h_info_list.add(new Walk_Info(id,name,address, getBitmapFromURL(BASE_URL+ "/walks/" + image_url + ".jpg")));
             }
-
-
             myadapter = new WalkListAdapter(getApplicationContext(),R.layout.tema_info, h_info_list);
             list.setAdapter(myadapter);
+
+            for(Walk_Info each : h_info_list){
+                each.loadImage(myadapter);
+            }
 
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-                    Intent intent = new Intent(getApplicationContext(), TemaResultActivity.class); // 다음넘어갈 화면
-                    Bitmap sendBitmap = h_info_list.get(position).image;
+                    Intent intent = new Intent(getApplicationContext(), ScrollingActivity.class); // 다음넘어갈 화면
+                    Walk_Info data = h_info_list.get(position);
+                    intent.putExtra("walk_name",data.walk_name);
+                    intent.putExtra("walk_level",data.level);
+                    intent.putExtra("walk_area",data.area);
 
+                    Bitmap sendBitmap = data.image;
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] byteArray = stream.toByteArray();
 
-                    intent.putExtra("image",byteArray);
+                    intent.putExtra("walk_image",byteArray);
+
                     startActivity(intent);
                 }
             });
 
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
     }
 
     public void getData(String url){
