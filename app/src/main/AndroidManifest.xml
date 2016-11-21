@@ -3,6 +3,10 @@
     package="com.example.ankwinam.myapplication">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.tistory.webnautes.googlemap.locationapi.maps.permission.MAPS_RECEIVE" />
 
     <application
         android:allowBackup="true"
@@ -44,6 +48,13 @@
             android:name=".ScrollingActivity"
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCzegQ6aJE_iKPJZGFYWiEQfktS-Nzq3Cg" />
+
     </application>
 
 </manifest>
