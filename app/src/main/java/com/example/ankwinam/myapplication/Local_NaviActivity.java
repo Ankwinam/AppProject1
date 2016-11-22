@@ -46,7 +46,7 @@ import java.util.logging.LogRecord;
 public class Local_NaviActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private String[] Areagu;
     static final String BASE_URL="https://today-walks-lee-s-h.c9users.io";
-
+    Boolean cancel;
     String myJSON;
     private static final String TAG_RESULTS="result";
     ArrayList<Walk_Info> h_info_list;
@@ -190,21 +190,19 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
                 JSONObject c = peoples.getJSONObject(i);
                 String id = c.getString("walk_name");
                 String name = "자치구" + c.getString("area");
-                String address = "코스레벨" + c.getString("level");
+                String address = c.getString("level")+"";
 
-//                String replaceString = id.replace(" ", "%20");
                 String image_url = URLEncoder.encode(id,"UTF-8");
                 image_url = image_url.replace("+","%20");
                 String imgUrl = BASE_URL+ "/walks/" + image_url + ".jpg";
 
                 Walk_Info data = new Walk_Info(id, name, address, imgUrl);
                 h_info_list.add(data);
-//                Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-//                h_info_list.add(new Walk_Info(id,name,address, BitmapFactory.decodeResource(getResources(), R.drawable.time)));
-//                h_info_list.add(new Walk_Info(id,name,address, getBitmapFromURL(BASE_URL+ "/walks/" + image_url + ".jpg")));
+
             }
             myadapter = new WalkListAdapter(getApplicationContext(),R.layout.tema_info, h_info_list);
             list.setAdapter(myadapter);
+
 
             for(Walk_Info each : h_info_list){
                 each.loadImage(myadapter);
@@ -213,7 +211,10 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-                    Intent intent = new Intent(getApplicationContext(), ScrollingActivity.class); // 다음넘어갈 화면
+//                    for(Walk_Info each : h_info_list){
+//                        each.cancel();
+//                    }
+                    Intent intent = new Intent(getApplicationContext(), DetailActivity.class); // 다음넘어갈 화면
                     Walk_Info data = h_info_list.get(position);
                     intent.putExtra("walk_name",data.walk_name);
                     intent.putExtra("walk_level",data.level);

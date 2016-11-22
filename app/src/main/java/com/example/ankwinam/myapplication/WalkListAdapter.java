@@ -66,7 +66,7 @@ public class WalkListAdapter extends BaseAdapter {
         }
         Hu_name.setText(data.get(position).walk_name);
         Hu_gender.setText(data.get(position).area);
-        Hu_age.setText(data.get(position).level);
+        Hu_age.setText("코스레벨 "+ data.get(position).level);
 
         return convertView;
     }

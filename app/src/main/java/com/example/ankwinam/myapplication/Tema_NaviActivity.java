@@ -106,43 +106,6 @@ public class Tema_NaviActivity extends AppCompatActivity implements NavigationVi
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
-//        //리스트 뷰 구현
-//        listView = (ListView)findViewById(R.id.listView_tema);
-//        myLocal1 = new Walk_Info("송지은", "여", "26", BitmapFactory.decodeResource(getResources(), R.drawable.time));
-//        myLocal2 = new Walk_Info("박보람", "여", "22", BitmapFactory.decodeResource(getResources(), R.drawable.time));
-//        myLocal3 = new Walk_Info("설현", "여", "21", BitmapFactory.decodeResource(getResources(), R.drawable.time));
-//        h_info_list = new ArrayList<Walk_Info>();
-//        h_info_list.add(myLocal1);
-//        h_info_list.add(myLocal2);
-//        h_info_list.add(myLocal3);
-//        h_info_list.add(myLocal1);
-//        h_info_list.add(myLocal2);
-//        h_info_list.add(myLocal3);
-//        h_info_list.add(myLocal1);
-//        h_info_list.add(myLocal2);
-//        h_info_list.add(myLocal3);
-//
-//        myadapter = new WalkListAdapter(getApplicationContext(),R.layout.tema_info, h_info_list);
-//        listView.setAdapter(myadapter);
-//
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-////                Intent intent = new Intent(getApplicationContext(), TemaResultActivity.class); // 다음넘어갈 화면
-////                Bitmap sendBitmap = h_info_list.get(position).image;
-////
-////                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-////                sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-////                byte[] byteArray = stream.toByteArray();
-////
-////                intent.putExtra("image",byteArray);
-////                startActivity(intent);
-//                Intent detail_go = new Intent(Tema_NaviActivity.this, ScrollingActivity.class);
-//                startActivity(detail_go);
-//            }
-//        });
     }
 
     //수정해야할 print 함수 부분
@@ -243,6 +206,9 @@ public class Tema_NaviActivity extends AppCompatActivity implements NavigationVi
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                    for(Walk_Info each : h_info_list){
+                        each.cancel();
+                    }
                     Intent intent = new Intent(getApplicationContext(), TemaResultActivity.class); // 다음넘어갈 화면
                     Bitmap sendBitmap = h_info_list.get(position).image;
 
@@ -252,7 +218,6 @@ public class Tema_NaviActivity extends AppCompatActivity implements NavigationVi
 
                     intent.putExtra("image",byteArray);
                     startActivity(intent);
-
                 }
             });
 

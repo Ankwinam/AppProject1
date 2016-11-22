@@ -20,6 +20,7 @@ public class Walk_Info {
     public Bitmap image;
     public String imgUrl;
     public WalkListAdapter wat;
+    private ImageLoadTask loadTask;
 
     Walk_Info(String walk_name, String area, String level, String imgUrl){
         this.imgUrl = imgUrl;
@@ -28,13 +29,21 @@ public class Walk_Info {
         this.level = level;
 
         this.image = null;
+
+        loadTask = new ImageLoadTask();
     }
+
     public void loadImage(WalkListAdapter wat) {
         // HOLD A REFERENCE TO THE ADAPTER
         this.wat = wat;
         if (imgUrl != null && !imgUrl.equals("")) {
-            new ImageLoadTask().execute(imgUrl);
+            loadTask.execute(imgUrl);
         }
+    }
+
+    public void cancel(){
+        Log.e("Asyn","Cancel");
+        loadTask.cancel(true);
     }
 
     public Bitmap getImage() {

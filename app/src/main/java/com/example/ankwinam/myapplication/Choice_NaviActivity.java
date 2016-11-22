@@ -1,6 +1,7 @@
 package com.example.ankwinam.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -65,29 +66,6 @@ public class Choice_NaviActivity extends AppCompatActivity
         }
     }
 
-    //오른쪽 옵션메뉴
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.navigation, menu);
-//        return true;
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -119,6 +97,12 @@ public class Choice_NaviActivity extends AppCompatActivity
             startActivity(go_jjim);
             finish();
         } else if (id == R.id.menu_logout) {
+            SharedPreferences pref = getSharedPreferences("auto_login",MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.clear();
+            editor.putString("auto","false");
+            editor.commit();
+
             Intent go_main = new Intent(Choice_NaviActivity.this, MainActivity.class);
             startActivity(go_main);
             finish();
