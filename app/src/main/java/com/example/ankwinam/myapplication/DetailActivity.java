@@ -100,7 +100,7 @@ public class DetailActivity extends AppCompatActivity {
                     course = "<코스>\n" + c.getString("DETAIL_COURSE");
                     traffic_info = "<진입로 정보>\n" + c.getString("TRAFFIC_INFO");
                     time = "<예상소요시간>\n" + c.getString("LEAD_TIME");
-                    point_content += Integer.toString(point) + "포인트 : " + c.getString("CPI_CONTENT") + "\n\n";
+                    point_content += "[" + Integer.toString(point) + " 포인트]\n" + c.getString("CPI_CONTENT") + "\n\n";
                 }else if (q==1) {
                     Log.e("check","끝남");
                     break;
