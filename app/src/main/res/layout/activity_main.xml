@@ -110,15 +110,15 @@
         android:gravity="right"
         android:paddingRight="65dp">
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="로그인 유지"
-            android:id="@+id/main_checkBox"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/login_btn"
-            android:layout_centerHorizontal="true"
-            android:textColor="#ffffff" />
+        <!--<CheckBox-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="로그인 유지"-->
+            <!--android:id="@+id/main_checkBox"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_below="@+id/login_btn"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:textColor="#ffffff" />-->
     </LinearLayout>
 
     <LinearLayout

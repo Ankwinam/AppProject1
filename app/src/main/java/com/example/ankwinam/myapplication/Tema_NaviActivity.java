@@ -183,7 +183,7 @@ public class Tema_NaviActivity extends AppCompatActivity implements NavigationVi
             peoples = jsonObj.getJSONArray(TAG_RESULTS);
             h_info_list = new ArrayList<Walk_Info>();
 
-            for(int i=0;i<peoples.length();i++){
+            for(int i=0;i<20;i++){
                 JSONObject c = peoples.getJSONObject(i);
                 String id = c.getString("walk_name");
                 String name = "자치구" + c.getString("area");
@@ -199,7 +199,10 @@ public class Tema_NaviActivity extends AppCompatActivity implements NavigationVi
             myadapter = new WalkListAdapter(getApplicationContext(),R.layout.tema_info, h_info_list);
             list.setAdapter(myadapter);
 
+            int i = 0;
             for(Walk_Info each : h_info_list){
+                if(i<20) break; //상위 20개만 load
+                i++;
                 each.loadImage(myadapter);
             }
 

@@ -23,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText email_Input;
     private EditText password_Input;
-    private CheckBox login_auto;
-    private Boolean loginChecked;
+//    private CheckBox login_auto;
+//    private Boolean loginChecked;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         email_Input = (EditText)findViewById(R.id.main_emailinput);
         password_Input = (EditText)findViewById(R.id.main_pwinput);
-        login_auto = (CheckBox)findViewById(R.id.main_checkBox);
+//        login_auto = (CheckBox)findViewById(R.id.main_checkBox);
         pref = getSharedPreferences("auto_login",MODE_PRIVATE);
 
         //자동로그인
@@ -84,14 +84,11 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if(successResult == 1) {
-                    if(login_auto.isChecked()){
-                        Log.e("auto","ok");
-                        editor = pref.edit();
-                        editor.putString("email",email_Input.getText().toString());
-                        editor.putString("pw",password_Input.getText().toString());
-                        editor.putString("auto","true");
-                        editor.commit();
-                    }
+                    editor = pref.edit();
+                    editor.putString("email",email_Input.getText().toString());
+                    editor.putString("pw",password_Input.getText().toString());
+                    editor.putString("auto","true");
+                    editor.commit();
                     Intent login = new Intent(MainActivity.this, Choice_NaviActivity.class);
                     startActivity(login);
                     finish();
@@ -101,20 +98,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // checkBoxListener 셋팅
-        login_auto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                    loginChecked = true;
-                else {
-                    // 체크되지 않았다면 다 지워라
-                    loginChecked = false;
-                    editor.clear();
-                    editor.commit();
-                }
-            }
-        });
+//        // checkBoxListener 셋팅
+//        login_auto.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked)
+//                    loginChecked = true;
+//                else {
+//                    // 체크되지 않았다면 다 지워라
+//                    loginChecked = false;
+//                    editor.clear();
+//                    editor.commit();
+//                }
+//            }
+//        });
     }
 
 

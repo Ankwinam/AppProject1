@@ -33,30 +33,15 @@
                 android:gravity="center"
                 android:textSize="18sp" />
 
-            <LinearLayout
-                android:orientation="horizontal"
+
+            <TextView
+                android:text="area"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:text="TextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textView2"
-                    android:layout_weight="1.11" />
-
-                <RatingBar
-                    android:id="@+id/detail_level"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:isIndicator="false"
-                    android:numStars="1"
-                    android:rating="3"
-                    android:stepSize="0.5"
-                    android:max="3"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_level"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="18sp" />
 
             <ImageView
                 android:layout_width="match_parent"
