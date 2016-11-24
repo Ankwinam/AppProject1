@@ -2,19 +2,22 @@ package com.example.ankwinam.myapplication;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationListener;
@@ -24,11 +27,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapActivity extends Activity implements
+public class MapActivity extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapReadyCallback {
 
     static final LatLng SEOUL = new LatLng(37.56, 126.97);
@@ -37,6 +42,13 @@ public class MapActivity extends Activity implements
     private LocationRequest mLocationRequest;
     private static final int REQUEST_CODE_LOCATION = 2000;//임의의 정수로 정의
     private GoogleMap googleMap;
+
+//    //////////////////////////////////////////
+//    Marker mMarkerStart;
+//    Marker mMarkerMan;
+//    boolean mFirstLoc = true;
+//    LocationManager mLocMgr;
+//    //////////////////////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +70,75 @@ public class MapActivity extends Activity implements
                 .addApi(LocationServices.API)
                 .build();
 
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+////////////////////////////////////////////////////
+//        initMap();
+//        mLocMgr = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+//        //////////////////////////////////////////
     }
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//    LocationListener mLocListener = new LocationListener() {
+//        public void onLocationChanged(Location location) {
+//            LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
+//            if( mFirstLoc ) {
+//                mFirstLoc = false;
+//                mMarkerStart.setPosition(position);
+//            }
+//
+//            mMarkerMan.setPosition(position);
+//            googleMap.moveCamera(CameraUpdateFactory.newLatLng(position) );
+//        }
+//
+//        public void onProviderDisabled(String provider) {}
+//        public void onProviderEnabled(String provider) {}
+//        public void onStatusChanged(String provider, int status, Bundle extras) {}
+//    };
+//
+//    public void onResume() {
+//        super.onResume();
+//        String locProv = LocationManager.GPS_PROVIDER;
+//        mLocMgr.requestLocationUpdates(locProv, (long)3000, 3.f, mLocListener);
+//    }
+//
+//    public void onPause() {
+//        super.onPause();
+//        mLocMgr.removeUpdates(mLocListener);
+//    }
+//
+//    private void initMap() {
+//        GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+//        googleMap = ((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+//        LatLng pos = new LatLng(37.4980, 127.027);
+//        // 맵 중심 위치 이동
+//        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 15));
+//
+//        // 시작 위치에 마커 추가
+//        MarkerOptions moStart = new MarkerOptions();
+//        moStart.position(pos);
+//        moStart.title("출발");
+//        mMarkerStart = googleMap.addMarker(moStart);
+//        mMarkerStart.showInfoWindow();
+//        //mMarkerStart = mGoogleMap.addMarker(new MarkerOptions().position(pos).title("출발"));
+//
+//        //마커 클릭 리스너
+//        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//            @Override
+//            public boolean onMarkerClick(Marker marker) {
+//                Toast.makeText(getApplication(), "출발 위치", Toast.LENGTH_SHORT).show();
+//                return true;
+//            }
+//        });
+//
+//        // 보행자 마커 추가
+//        MarkerOptions moMan = new MarkerOptions();
+//        moMan.position(pos);
+//        moMan.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_menu_camera));
+//        mMarkerMan = googleMap.addMarker( moMan );
+//    }
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
