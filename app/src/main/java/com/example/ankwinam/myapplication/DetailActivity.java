@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -28,11 +30,34 @@ public class DetailActivity extends AppCompatActivity {
     TextView area;
     TextView info;
     Bitmap image;
+    Button Tracking;
+    Button Community;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_scrolling);
+
+        Tracking = (Button) findViewById(R.id.detail_tracking_btn);
+        Community = (Button) findViewById(R.id.detail_community_btn);
+
+        Tracking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DetailActivity.this, MapActivity.class);
+                //좌표정보 받아와야 해!
+
+                startActivity(i);
+            }
+        });
+
+        Community.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
 
         main_name = (TextView) findViewById(R.id.detail_name);
         area = (TextView) findViewById(R.id.detail_area);
