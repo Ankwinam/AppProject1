@@ -19,6 +19,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.apache.http.client.HttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -132,30 +133,30 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
                 }
             }
 
-            ////////////////////////////////////////map//////////////////////////////////////////////////////
-            CameraUpdate update = CameraUpdateFactory.newLatLng(new LatLng(mapY,mapX));
-            googleMap.moveCamera(update);
-            CameraUpdate zoom = CameraUpdateFactory.zoomTo(14);
-            googleMap.animateCamera(zoom);
-
-            googleMap.getUiSettings().setZoomControlsEnabled(false);
-            googleMap.getUiSettings().setZoomGesturesEnabled(false);
-            googleMap.getUiSettings().setScrollGesturesEnabled(false);
-            googleMap.getUiSettings().setAllGesturesEnabled(false);
-
-            MarkerOptions markerOptions = new MarkerOptions()
-                    // 마커 위치
-                    .position(new LatLng(mapY,mapX))
-                    .title(walk_name);
-
-            googleMap.addMarker(markerOptions).showInfoWindow();
-            ///////////////////////////////////////map//////////////////////////////////////////////////////
-
+//            ////////////////////////////////////////map//////////////////////////////////////////////////////
+//            CameraUpdate update = CameraUpdateFactory.newLatLng(new LatLng(mapY,mapX));
+//            googleMap.moveCamera(update);
+//            CameraUpdate zoom = CameraUpdateFactory.zoomTo(14);
+//            googleMap.animateCamera(zoom);
+//
+//            googleMap.getUiSettings().setZoomControlsEnabled(false);
+//            googleMap.getUiSettings().setZoomGesturesEnabled(false);
+//            googleMap.getUiSettings().setScrollGesturesEnabled(false);
+//            googleMap.getUiSettings().setAllGesturesEnabled(false);
+//
+//            MarkerOptions markerOptions = new MarkerOptions()
+//                    // 마커 위치
+//                    .position(new LatLng(mapY,mapX))
+//                    .title(walk_name);
+//
+//            googleMap.addMarker(markerOptions).showInfoWindow();
+//            ///////////////////////////////////////map//////////////////////////////////////////////////////
+//
             info.setText(course + "\n\n" + traffic_info + "\n\n" + time + "\n\n<포인트별 상세정보>\n" + point_content + "\n");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        mapFragment.getMapAsync(this);
     }
     //Json파일 불러오는 Method
     public String loadJSONFromAsset(String url) {
@@ -179,24 +180,24 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     public void onMapReady(final GoogleMap detail_map) {
         googleMap = detail_map;
 
-//        ////////////////////////////////////////map//////////////////////////////////////////////////////
-//        CameraUpdate update = CameraUpdateFactory.newLatLng(new LatLng(mapY,mapX));
-//        googleMap.moveCamera(update);
-//        CameraUpdate zoom = CameraUpdateFactory.zoomTo(14);
-//        googleMap.animateCamera(zoom);
-//
+        ////////////////////////////////////////map//////////////////////////////////////////////////////
+        CameraUpdate update = CameraUpdateFactory.newLatLng(new LatLng(mapY,mapX));
+        googleMap.moveCamera(update);
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(14);
+        googleMap.animateCamera(zoom);
+
 //        googleMap.getUiSettings().setZoomControlsEnabled(false);
 //        googleMap.getUiSettings().setZoomGesturesEnabled(false);
 //        googleMap.getUiSettings().setScrollGesturesEnabled(false);
 //        googleMap.getUiSettings().setAllGesturesEnabled(false);
-//
-//        MarkerOptions markerOptions = new MarkerOptions()
-//                // 마커 위치
-//                .position(new LatLng(mapY,mapX))
-//                .title(walk_name);
-//
-//        googleMap.addMarker(markerOptions).showInfoWindow();
-//        ///////////////////////////////////////map//////////////////////////////////////////////////////
+
+        MarkerOptions markerOptions = new MarkerOptions()
+                // 마커 위치
+                .position(new LatLng(mapY,mapX))
+                .title(walk_name);
+
+        googleMap.addMarker(markerOptions).showInfoWindow();
+        ///////////////////////////////////////map//////////////////////////////////////////////////////
     }
 
 }
