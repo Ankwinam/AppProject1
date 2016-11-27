@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_review_write"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.ankwinam.myapplication.CommunityWriteActivity"
+    android:orientation="vertical"
+    android:background="#f2f1f1">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/review_layoutbutton"
+        android:clickable="true"
+        android:layout_weight="1"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/write_img"
+            android:background="#f7f2f2"
+            android:src="@drawable/photo_upload"
+            android:scaleType="fitXY"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center_horizontal|center" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/write_title"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="8dp"
+            android:background="#ffffff"
+            android:padding="5dp"
+            android:hint="제목을 입력하세요"
+            android:textColorHint="@color/cardview_shadow_start_color"
+            android:textSize="14sp"
+            android:layout_marginTop="9dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine|textPersonName"
+            android:ems="10"
+            android:id="@+id/write_content"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="8dp"
+            android:background="#ffffff"
+            android:gravity="top|center_vertical"
+            android:hint="내용을 입력하세요"
+            android:textColorHint="@color/cardview_shadow_start_color"
+            android:textSize="14sp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:scrollHorizontally="false"
+            android:lines="10"
+            android:padding="5dp" />
+    </LinearLayout>
+
+    <Button
+        android:text="완료"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/write_upload"
+        android:textSize="16sp"
+        android:layout_margin="7dp" />
+
+</LinearLayout>
