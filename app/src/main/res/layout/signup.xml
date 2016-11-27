@@ -165,7 +165,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="방방곡곡"
+            android:text="오늘도산책"
             android:id="@+id/bangbang_signup"
             android:textSize="15dp"
             android:textAlignment="center"
