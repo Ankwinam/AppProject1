@@ -9,8 +9,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +30,7 @@ import java.io.InputStream;
  * Created by axx42 on 2016-11-21.
  */
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback {
     TextView main_name;
     TextView level;
     ImageView imageView;
@@ -33,10 +40,21 @@ public class DetailActivity extends AppCompatActivity {
     Button Tracking;
     Button Community;
 
+    double mapX = 0;
+    double mapY = 0;
+    String walk_name;
+
+    private GoogleMap googleMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_scrolling);
+
+        ////////////////////////////////map///////////////////////////////////////////
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.detail_map);
+        mapFragment.getMapAsync(this);
+        ////////////////////////////////map///////////////////////////////////////////
 
         Tracking = (Button) findViewById(R.id.detail_tracking_btn);
         Community = (Button) findViewById(R.id.detail_community_btn);
@@ -66,7 +84,9 @@ public class DetailActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.detail_imageView);
 
         Intent intent = getIntent();
-        String walk_name = intent.getStringExtra("walk_name");
+//        String walk_name = intent.getStringExtra("walk_name");
+        walk_name = intent.getStringExtra("walk_name");
+
         String walk_level = intent.getStringExtra("walk_level");
         String walk_area = intent.getStringExtra("walk_area");
 
@@ -87,6 +107,9 @@ public class DetailActivity extends AppCompatActivity {
         String traffic_info="";
         String time ="";
 
+//        double mapX = 0;
+//        double mapY = 0;
+
         //json으로 상세정보 불러오기!
         try {
             jsonObject = new JSONObject(data);
@@ -101,11 +124,33 @@ public class DetailActivity extends AppCompatActivity {
                     traffic_info = "<진입로 정보>\n" + c.getString("TRAFFIC_INFO");
                     time = "<예상소요시간>\n" + c.getString("LEAD_TIME");
                     point_content += "[" + Integer.toString(point) + " 포인트]\n" + c.getString("CPI_CONTENT") + "\n\n";
+                    mapX = c.getDouble("X");
+                    mapY = c.getDouble("Y");
                 }else if (q==1) {
                     Log.e("check","끝남");
                     break;
                 }
             }
+
+            ////////////////////////////////////////map//////////////////////////////////////////////////////
+            CameraUpdate update = CameraUpdateFactory.newLatLng(new LatLng(mapY,mapX));
+            googleMap.moveCamera(update);
+            CameraUpdate zoom = CameraUpdateFactory.zoomTo(14);
+            googleMap.animateCamera(zoom);
+
+            googleMap.getUiSettings().setZoomControlsEnabled(false);
+            googleMap.getUiSettings().setZoomGesturesEnabled(false);
+            googleMap.getUiSettings().setScrollGesturesEnabled(false);
+            googleMap.getUiSettings().setAllGesturesEnabled(false);
+
+            MarkerOptions markerOptions = new MarkerOptions()
+                    // 마커 위치
+                    .position(new LatLng(mapY,mapX))
+                    .title(walk_name);
+
+            googleMap.addMarker(markerOptions).showInfoWindow();
+            ///////////////////////////////////////map//////////////////////////////////////////////////////
+
             info.setText(course + "\n\n" + traffic_info + "\n\n" + time + "\n\n<포인트별 상세정보>\n" + point_content + "\n");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -128,6 +173,30 @@ public class DetailActivity extends AppCompatActivity {
             return null;
         }
         return json;
+    }
+
+    @Override
+    public void onMapReady(final GoogleMap detail_map) {
+        googleMap = detail_map;
+
+//        ////////////////////////////////////////map//////////////////////////////////////////////////////
+//        CameraUpdate update = CameraUpdateFactory.newLatLng(new LatLng(mapY,mapX));
+//        googleMap.moveCamera(update);
+//        CameraUpdate zoom = CameraUpdateFactory.zoomTo(14);
+//        googleMap.animateCamera(zoom);
+//
+//        googleMap.getUiSettings().setZoomControlsEnabled(false);
+//        googleMap.getUiSettings().setZoomGesturesEnabled(false);
+//        googleMap.getUiSettings().setScrollGesturesEnabled(false);
+//        googleMap.getUiSettings().setAllGesturesEnabled(false);
+//
+//        MarkerOptions markerOptions = new MarkerOptions()
+//                // 마커 위치
+//                .position(new LatLng(mapY,mapX))
+//                .title(walk_name);
+//
+//        googleMap.addMarker(markerOptions).showInfoWindow();
+//        ///////////////////////////////////////map//////////////////////////////////////////////////////
     }
 
 }

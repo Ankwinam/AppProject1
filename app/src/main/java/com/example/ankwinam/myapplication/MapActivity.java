@@ -43,12 +43,12 @@ public class MapActivity extends FragmentActivity implements
     private static final int REQUEST_CODE_LOCATION = 2000;//임의의 정수로 정의
     private GoogleMap googleMap;
 
-//    //////////////////////////////////////////
-//    Marker mMarkerStart;
-//    Marker mMarkerMan;
-//    boolean mFirstLoc = true;
-//    LocationManager mLocMgr;
-//    //////////////////////////////////////////
+    //////////////////////////////////////////
+    Marker mMarkerStart;
+    Marker mMarkerMan;
+    boolean mFirstLoc = true;
+    LocationManager mLocMgr;
+    //////////////////////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
