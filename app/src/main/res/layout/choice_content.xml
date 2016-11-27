@@ -13,7 +13,6 @@
     tools:showIn="@layout/choice_app_bar"
     android:orientation="vertical"
     android:background="#333232"
-    android:orientation="vertical"
     android:weightSum="1">
 
     <ImageButton
