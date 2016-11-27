@@ -12,20 +12,22 @@
     tools:context=".Choice_NaviActivity"
     tools:showIn="@layout/choice_app_bar"
     android:orientation="vertical"
-    android:weightSum="1">
+    android:weightSum="2">
 
     <ImageButton
         android:layout_width="match_parent"
-        android:layout_height="256dp"
         android:id="@+id/local_go"
         android:src="@drawable/local_button"
-        android:background="@android:color/transparent"/>
+        android:background="@android:color/transparent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
 
     <ImageButton
         android:layout_width="match_parent"
-        android:layout_height="228dp"
+        android:layout_weight="1"
         android:id="@+id/tema_go"
         android:src="@drawable/tema_button"
-        android:background="@android:color/transparent" />
+        android:background="@android:color/transparent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
