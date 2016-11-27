@@ -87,15 +87,7 @@ public class Tema_NaviActivity extends AppCompatActivity implements NavigationVi
                 }
         );
 
-        //글쓰기 버튼 이벤트
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent write = new Intent(Tema_NaviActivity.this, WritePageActivity.class);
-                startActivity(write);
-            }
-        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
