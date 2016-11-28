@@ -134,7 +134,6 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        mapFragment.getMapAsync(this);
     }
     //Json파일 불러오는 Method
     public String loadJSONFromAsset(String url) {

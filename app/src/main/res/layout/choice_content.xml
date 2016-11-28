@@ -16,18 +16,18 @@
 
     <ImageButton
         android:layout_width="match_parent"
-        android:id="@+id/local_go"
-        android:src="@drawable/local_button"
-        android:background="@android:color/transparent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:id="@+id/local_go"
+        android:layout_weight="1"
+        android:src="@drawable/local_button"
+        android:background="@android:color/transparent"/>
 
     <ImageButton
         android:layout_width="match_parent"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:id="@+id/tema_go"
+        android:layout_weight="1"
         android:src="@drawable/tema_button"
-        android:background="@android:color/transparent"
-        android:layout_height="wrap_content" />
+        android:background="@android:color/transparent"/>
 
 </LinearLayout>
