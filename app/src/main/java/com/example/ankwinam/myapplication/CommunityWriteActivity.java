@@ -91,8 +91,12 @@ public class CommunityWriteActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri filePath = data.getData();
             try {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 4;
                 //Getting the Bitmap from Gallery
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 1024, 2048, true);
+                bitmap = resized;
                 //Setting the Bitmap to ImageView
                 imageButton.setImageBitmap(bitmap);
             } catch (IOException e) {
