@@ -20,9 +20,9 @@ import java.util.List;
  */
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     Context context;
-    List<Communiry_item> items;
+    List<Community_item> items;
     int item_layout;
-    public RecyclerAdapter(Context context, List<Communiry_item> items, int item_layout) {
+    public RecyclerAdapter(Context context, List<Community_item> items, int item_layout) {
         this.context=context;
         this.items=items;
         this.item_layout=item_layout;
@@ -37,9 +37,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Communiry_item item=items.get(position);
-        Drawable drawable=context.getResources().getDrawable(item.getImage());
-        holder.image.setBackground(drawable);
+        final Community_item item=items.get(position);
+//        Drawable drawable=context.getResources().getDrawable(item.getImage());
+//        holder.image.setBackground(drawable);
+        if(item.getImage() != null){
+            holder.image.setImageBitmap(item.getImage());
+        }else {
+            holder.image.setImageResource(R.drawable.ic_menu_gallery);
+        }
         holder.title.setText(item.getTitle());
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override

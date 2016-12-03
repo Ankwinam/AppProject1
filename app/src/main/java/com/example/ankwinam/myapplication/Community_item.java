@@ -3,6 +3,7 @@ package com.example.ankwinam.myapplication;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import java.io.IOException;
@@ -11,47 +12,40 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by axx42 on 2016-09-09.
+ * Created by axx42 on 2016-11-27.
  */
-public class Walk_Info {
-    public String walk_name;
-    public String area;
-    public String level;
-    public Bitmap image;
-    public String imgUrl;
-    public WalkListAdapter wat;
+
+public class Community_item {
+    public Bitmap image ;
+    String title;
+    RecyclerView wat;
+    String imgUrl;
     private ImageLoadTask loadTask;
 
-    Walk_Info(String walk_name, String area, String level, String imgUrl){
-        this.imgUrl = imgUrl;
-        this.walk_name =walk_name;
-        this.area = area;
-        this.level = level;
+    Bitmap getImage(){
+        return this.image;
+    }
+    String getTitle(){
+        return this.title;
+    }
 
+    Community_item(String imageUrl, String title){
+        this.imgUrl=imageUrl;
+        this.title=title;
         this.image = null;
-
         loadTask = new ImageLoadTask();
     }
 
-    public void loadImage(WalkListAdapter wat) {
+    public void loadImage(RecyclerView wat) {
         // HOLD A REFERENCE TO THE ADAPTER
         this.wat = wat;
+        Log.e("Check_item",this.imgUrl);
         if (imgUrl != null && !imgUrl.equals("")) {
-            loadTask.execute(imgUrl);
+            loadTask.execute(this.imgUrl);
         }
     }
-
-    public void cancel(){
-        Log.e("Asyn","Cancel");
-        loadTask.cancel(true);
-    }
-
-    public Bitmap getImage() {
-        return image;
-    }
-
-    // ASYNC TASK TO AVOID CHOKING UP UI THREAD
     private class ImageLoadTask extends AsyncTask<String, String, Bitmap> {
+
         @Override
         protected void onPreExecute() {
             Log.e("ImageLoadTask", "Loading image...");
@@ -77,29 +71,11 @@ public class Walk_Info {
                 image = ret;
                 if (wat != null) {
                     // WHEN IMAGE IS LOADED NOTIFY THE ADAPTER
-                    wat.notifyDataSetChanged();
+                    wat.getAdapter().notifyDataSetChanged();
                 }
             } else {
                 Log.e("ImageLoadTask", "Failed to load " + imgUrl + " image");
             }
-        }
-    }
-
-
-
-
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 }
