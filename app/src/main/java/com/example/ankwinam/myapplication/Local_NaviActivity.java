@@ -43,6 +43,7 @@ import java.util.logging.LogRecord;
 /**
  * Created by An Kwi nam on 2016-09-08.
  */
+
 public class Local_NaviActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private String[] Areagu;
     static final String BASE_URL="https://today-walks-lee-s-h.c9users.io";
@@ -106,18 +107,6 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-    }
-
-//수정해야할 print 함수 부분
-    public void print(View v, int position){
-        Spinner sp = (Spinner)findViewById(R.id.Distence_spinner);
-        String res = "";
-        if(sp.getSelectedItemPosition()>0){
-            res=(String)sp.getAdapter().getItem(sp.getSelectedItemPosition());
-        }
-        if(res!=""){
-            Toast.makeText(getApplicationContext(), res, Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override

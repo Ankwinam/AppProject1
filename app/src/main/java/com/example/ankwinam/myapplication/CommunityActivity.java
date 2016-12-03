@@ -37,40 +37,37 @@ public class CommunityActivity extends AppCompatActivity {
     JSONArray boards = null;
     ArrayList<Community_item> info_list;
     RecyclerView recyclerView;
-
+    String walk_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.community_main);
-        ArrayList<Community_item> info_list;
-
-        //글쓰기 버튼 이벤트
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent write = new Intent(CommunityActivity.this, CommunityWriteActivity.class);
-                startActivity(write);
-            }
-        });
 
         recyclerView=(RecyclerView)findViewById(R.id.recyclerview);
         LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
-//        List<Community_item> items=new ArrayList<>();
-//        Community_item[] item=new Community_item[5];
-//        item[0]=new Community_item(R.drawable.ic_menu_camera,"#1");
-//        item[1]=new Community_item(R.drawable.ic_menu_camera,"#2");
-//        item[2]=new Community_item(R.drawable.ic_menu_camera,"#3");
-//        item[3]=new Community_item(R.drawable.ic_menu_camera,"#4");
-//        item[4]=new Community_item(R.drawable.ic_menu_camera,"#5");
-//
-//        for(int i=0;i<5;i++) items.add(item[i]);
-//
-//        recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(),items,R.layout.activity_main));
-        getData(BASE_URL+"/board.php?walk=test");
+        Intent i = getIntent();
+        walk_name = i.getStringExtra("walk_name");
+        //글쓰기 버튼 이벤트
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent write = new Intent(CommunityActivity.this, CommunityWriteActivity.class);
+                write.putExtra("walk_name",walk_name);
+                startActivity(write);
+            }
+        });
+
+        String walk_parm = "";
+        try {
+            walk_parm = java.net.URLEncoder.encode(new String(walk_name.getBytes("UTF-8")));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        getData(BASE_URL+"/board.php?walk=" + walk_parm);
     }
 
 

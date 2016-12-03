@@ -49,7 +49,7 @@ public class CommunityWriteActivity extends AppCompatActivity {
     private SharedPreferences pref;
 
     private String UPLOAD_URL ="https://today-walks-lee-s-h.c9users.io/board_write.php";
-
+    private String walk_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +60,8 @@ public class CommunityWriteActivity extends AppCompatActivity {
         write_content = (EditText) findViewById(R.id.write_content);
         imageButton = (ImageButton)findViewById(R.id.write_img);
         pref = getSharedPreferences("auto_login",MODE_PRIVATE);
+        Intent i = getIntent();
+        walk_name = i.getStringExtra("walk_name");
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +150,7 @@ public class CommunityWriteActivity extends AppCompatActivity {
                 params.put("title", title);
                 params.put("content",content);
                 params.put("email",email);
-                params.put("course","test");
+                params.put("course",walk_name);
 
                 //returning parameters
                 return params;

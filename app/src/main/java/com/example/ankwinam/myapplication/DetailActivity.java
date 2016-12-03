@@ -60,25 +60,6 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         Tracking = (Button) findViewById(R.id.detail_tracking_btn);
         Community = (Button) findViewById(R.id.detail_community_btn);
 
-        Tracking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(DetailActivity.this, MapActivity.class);
-                //좌표정보 받아와야 해!
-
-                startActivity(i);
-            }
-        });
-
-        Community.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(DetailActivity.this,CommunityActivity.class);
-                startActivity(i);
-            }
-        });
-
-
         main_name = (TextView) findViewById(R.id.detail_name);
         area = (TextView) findViewById(R.id.detail_area);
         level = (TextView) findViewById(R.id.detail_level);
@@ -134,6 +115,26 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
+        Tracking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DetailActivity.this, MapActivity.class);
+                //좌표정보 받아와야 해!
+
+                startActivity(i);
+            }
+        });
+
+        Community.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DetailActivity.this,CommunityActivity.class);
+                i.putExtra("walk_name",walk_name);
+                startActivity(i);
+            }
+        });
     }
     //Json파일 불러오는 Method
     public String loadJSONFromAsset(String url) {
@@ -156,43 +157,5 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(final GoogleMap detail_map) {
         googleMap = detail_map;
-
-//        JSONObject jsonObject;
-//        String data = loadJSONFromAsset("json/data.json");
-//
-//        try {
-//            jsonObject = new JSONObject(data);
-//            JSONArray Data = jsonObject.getJSONArray("DATA");
-//            for(int i=0; i<Data.length(); i++){
-//                JSONObject c = Data.getJSONObject(i);
-//                if(c.getString("COURSE_NAME").equals(walk_name)){
-//                    mapX = c.getDouble("X");
-//                    mapY = c.getDouble("Y");
-//                    Log.e("Check","1");
-//                    break;
-//                }
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        ////////////////////////////////////////map//////////////////////////////////////////////////////
-//        CameraUpdate update = CameraUpdateFactory.newLatLng(new LatLng(mapY,mapX));
-//        googleMap.moveCamera(update);
-//        CameraUpdate zoom = CameraUpdateFactory.zoomTo(14);
-//        googleMap.animateCamera(zoom);
-//
-//        googleMap.getUiSettings().setZoomControlsEnabled(false);
-//        googleMap.getUiSettings().setZoomGesturesEnabled(false);
-//        googleMap.getUiSettings().setScrollGesturesEnabled(false);
-//        googleMap.getUiSettings().setAllGesturesEnabled(false);
-//
-//        MarkerOptions markerOptions = new MarkerOptions()
-//                // 마커 위치
-//                .position(new LatLng(mapY,mapX))
-//                .title(walk_name);
-//
-//        googleMap.addMarker(markerOptions).showInfoWindow();
-//        ///////////////////////////////////////map//////////////////////////////////////////////////////
     }
 }
