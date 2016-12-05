@@ -7,19 +7,17 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.apache.http.client.HttpClient;
+import net.daum.mf.map.api.MapPOIItem;
+import net.daum.mf.map.api.MapPoint;
+import net.daum.mf.map.api.MapView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,11 +25,15 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 
+
 /**
  * Created by axx42 on 2016-11-21.
  */
 
-public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class DetailActivity extends AppCompatActivity /*implements MapView.MapViewEventListener*/ {
+
+    //public static String API_KEY = "563f51225e2f3bd14cd9287c3e7b067";
+
     TextView main_name;
     TextView level;
     ImageView imageView;
@@ -45,20 +47,42 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
     double mapY = 0;
     String walk_name;
 
-    private GoogleMap googleMap;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_scrolling);
 
-        ////////////////////////////////map///////////////////////////////////////////
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.detail_map);
-        mapFragment.getMapAsync(this);
-        ////////////////////////////////map///////////////////////////////////////////
+//        ///////////////////////////////////////맵///////////////////////////////////////
+//        MapView mapView = new MapView(this);
+//        mapView.setDaumMapApiKey(API_KEY);
+//
+//        ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.detail_map);
+//        mapViewContainer.addView(mapView);
+//
+//        mapView.setMapViewEventListener(this);
+//        /////////////////////////////////////////////////////////////////////////////////
 
         Tracking = (Button) findViewById(R.id.detail_tracking_btn);
         Community = (Button) findViewById(R.id.detail_community_btn);
+
+        Tracking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DetailActivity.this, MapActivity.class);
+                //좌표정보 받아와야 해!
+
+                startActivity(i);
+            }
+        });
+
+        Community.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DetailActivity.this,CommunityActivity.class);
+                startActivity(i);
+            }
+        });
+
 
         main_name = (TextView) findViewById(R.id.detail_name);
         area = (TextView) findViewById(R.id.detail_area);
@@ -115,26 +139,6 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-        Tracking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(DetailActivity.this, MapActivity.class);
-                //좌표정보 받아와야 해!
-
-                startActivity(i);
-            }
-        });
-
-        Community.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(DetailActivity.this,CommunityActivity.class);
-                i.putExtra("walk_name",walk_name);
-                startActivity(i);
-            }
-        });
     }
     //Json파일 불러오는 Method
     public String loadJSONFromAsset(String url) {
@@ -154,8 +158,61 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         return json;
     }
 
-    @Override
-    public void onMapReady(final GoogleMap detail_map) {
-        googleMap = detail_map;
-    }
+//    @Override
+//    public void onMapViewInitialized(MapView mapView) {
+////        //지도 이동
+////        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(mapX, mapY);
+////        mapView.setMapCenterPoint(mapPoint, true);
+////
+////        //마커 생성
+////        MapPOIItem marker = new MapPOIItem();
+////        marker.setItemName("Default Marker");
+////        marker.setTag(0);
+////        marker.setMapPoint(mapPoint);
+////        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);  //기본으로 제공하는 BluePin 마커 모양
+////        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); //마커를 클릭했을때 기본으로 제공하는 RedPin 마커 모양
+////
+////        //마커 추가
+////        mapView.addPOIItem(marker);
+//    }
+//
+//    @Override
+//    public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint) {
+//
+//    }
+//
+//    @Override
+//    public void onMapViewZoomLevelChanged(MapView mapView, int i) {
+//
+//    }
+//
+//    @Override
+//    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
+//
+//    }
+//
+//    @Override
+//    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
+//
+//    }
+//
+//    @Override
+//    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
+//
+//    }
+//
+//    @Override
+//    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
+//
+//    }
+//
+//    @Override
+//    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
+//
+//    }
+//
+//    @Override
+//    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
+//
+//    }
 }
