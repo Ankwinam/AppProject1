@@ -38,7 +38,7 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
     public void onMapViewInitialized(MapView mapView) {
         //지도 이동
         //MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633);
-        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(25.47, 59.7);
+        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(37.473206, 127.035333);
         mapView.setMapCenterPoint(mapPoint, true);
 
         //마커 생성
@@ -57,10 +57,36 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         polyline.setLineColor(Color.argb(128, 255, 51, 0)); // Polyline 컬러 지정.
 
 // Polyline 좌표 지정.
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(2547, 597));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(2558, 580));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(2558, 567));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(2551, 558));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473206, 127.035333));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.472943, 127.034134));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.471748, 127.032526));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.470290, 127.031072));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.467718, 127.029540));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.467596, 127.028775));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.467955, 127.028740));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.468674, 127.029263));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.469413, 127.029926));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.470162, 127.030411));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.471631, 127.031872));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.472167, 127.032459));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.472390, 127.032554));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.472790, 127.033090));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473200, 127.033798));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473529, 127.034915));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473833, 127.036382));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.474714, 127.037518));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.474729, 127.038034));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.475225, 127.039502));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.479573, 127.043519));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.479353, 127.043938));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.475176, 127.040449));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.474715, 127.040008));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.474052, 127.038835));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473880, 127.038235));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473353, 127.037878));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473277, 127.037718));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473434, 127.036541));
+        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473206, 127.035333));
 
 // Polyline 지도에 올리기.
         mapView.addPolyline(polyline);
