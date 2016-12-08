@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_review_write"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.ankwinam.myapplication.CommentWriteActivity"
+    android:orientation="vertical"
+    android:background="#f2f1f1">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine|textPersonName"
+            android:ems="10"
+            android:id="@+id/comment_write_content"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="8dp"
+            android:background="#ffffff"
+            android:gravity="top|center_vertical"
+            android:hint="내용을 입력하세요"
+            android:textColorHint="@color/cardview_shadow_start_color"
+            android:textSize="14sp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:scrollHorizontally="false"
+            android:lines="10"
+            android:padding="5dp" />
+    </LinearLayout>
+
+    <Button
+        android:text="완료"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/comment_write_upload"
+        android:textSize="16sp"
+        android:layout_margin="7dp" />
+
+</LinearLayout>

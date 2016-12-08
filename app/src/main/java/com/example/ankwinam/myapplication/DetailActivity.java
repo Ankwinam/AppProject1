@@ -79,6 +79,7 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(DetailActivity.this,CommunityActivity.class);
+                i.putExtra("walk_name",walk_name);
                 startActivity(i);
             }
         });

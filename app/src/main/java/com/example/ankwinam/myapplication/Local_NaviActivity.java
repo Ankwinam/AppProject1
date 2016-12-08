@@ -53,7 +53,7 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
     ArrayList<Walk_Info> h_info_list;
 
     JSONArray peoples = null;
-    ArrayList<HashMap<String, String>> personList;
+
 
     private ListView list;
     WalkListAdapter myadapter;

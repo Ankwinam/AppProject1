@@ -20,6 +20,10 @@ public class Community_item {
     String title;
     RecyclerView wat;
     String imgUrl;
+    String walk_name;
+    String content;
+    String date;
+    String id;
     private ImageLoadTask loadTask;
 
     Bitmap getImage(){
@@ -29,10 +33,14 @@ public class Community_item {
         return this.title;
     }
 
-    Community_item(String imageUrl, String title){
+    Community_item(String imageUrl, String title, String walk_name, String content, String date, String id){
         this.imgUrl=imageUrl;
         this.title=title;
+        this.walk_name = walk_name;
         this.image = null;
+        this.content =content;
+        this.date =date;
+        this.id = id;
         loadTask = new ImageLoadTask();
     }
 
@@ -57,6 +65,8 @@ public class Community_item {
             Log.i("ImageLoadTask", "Attempting to load image URL: " + param[0]);
             try {
                 Bitmap b = Walk_Info.getBitmapFromURL(param[0]);
+                // 사이즈 조정 필요함!!
+//                b = Bitmap.createScaledBitmap(b, 1024, 2048, true);
                 return b;
             } catch (Exception e) {
                 e.printStackTrace();

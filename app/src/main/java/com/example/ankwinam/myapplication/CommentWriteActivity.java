@@ -31,9 +31,10 @@ import java.util.Hashtable;
 import java.util.Map;
 
 /**
- * Created by An Kwi nam on 2016-09-08.
+ * Created by axx42 on 2016-12-08.
  */
-public class CommunityWriteActivity extends AppCompatActivity {
+
+public class CommentWriteActivity  extends AppCompatActivity{
 
     private Button write_finish;
     private EditText write_title;
@@ -44,65 +45,38 @@ public class CommunityWriteActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private SharedPreferences pref;
 
-    private String UPLOAD_URL ="https://today-walks-lee-s-h.c9users.io/board_write.php";
+    private String UPLOAD_URL ="https://today-walks-lee-s-h.c9users.io/comment_write.php";
     private String walk_name;
+    private String id;
+    private String date;
+    private String content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.community_write);
+        setContentView(R.layout.comment_write);
 
-        write_finish = (Button)findViewById(R.id.write_upload);
-        write_title = (EditText) findViewById(R.id.write_title);
-        write_content = (EditText) findViewById(R.id.write_content);
-        imageButton = (ImageButton)findViewById(R.id.write_img);
+        write_finish = (Button) findViewById(R.id.comment_write_upload);
+        write_content = (EditText) findViewById(R.id.comment_write_content);
         pref = getSharedPreferences("auto_login",MODE_PRIVATE);
+
         Intent i = getIntent();
         walk_name = i.getStringExtra("walk_name");
-
-
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showFileChooser();
-            }
-        });
+        id = i.getStringExtra("id");
+        date = i.getStringExtra("date");
+        content = i.getStringExtra("content");
 
         write_finish.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(write_title.getText().toString().isEmpty()){
-                    Toast.makeText(CommunityWriteActivity.this, "제목을 입력하세요", Toast.LENGTH_SHORT).show();
-                }
-                else if(write_content.getText().toString().isEmpty()){
-                    Toast.makeText(CommunityWriteActivity.this, "내용을 입력하세요", Toast.LENGTH_SHORT).show();
+                if(write_content.getText().toString().isEmpty()){
+                    Toast.makeText(CommentWriteActivity.this, "내용을 입력하세요", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     uploadImage();
                 }
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri filePath = data.getData();
-            try {
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 4;
-                //Getting the Bitmap from Gallery
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 1024, 2048, true);
-                bitmap = resized;
-                //Setting the Bitmap to ImageView
-                imageButton.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private void uploadImage(){
@@ -116,11 +90,14 @@ public class CommunityWriteActivity extends AppCompatActivity {
                         loading.dismiss();
                         //Showing toast message of the response
 
-                        Toast.makeText(CommunityWriteActivity.this, "업로드 완료" , Toast.LENGTH_LONG).show();
+                        Toast.makeText(CommentWriteActivity.this, "업로드 완료" , Toast.LENGTH_LONG).show();
                         Log.e("Check", "success");
                         finish();
-                        Intent i = new Intent(CommunityWriteActivity.this,CommunityActivity.class);
+                        Intent i = new Intent(CommentWriteActivity.this,CommentActivity.class);
                         i.putExtra("walk_name",walk_name);
+                        i.putExtra("date",date);
+                        i.putExtra("content",content);
+                        i.putExtra("id",id);
                         startActivity(i);
                     }
                 },
@@ -131,24 +108,18 @@ public class CommunityWriteActivity extends AppCompatActivity {
                         loading.dismiss();
 
                         //Showing toast
-                        Toast.makeText(CommunityWriteActivity.this, volleyError.getMessage().toString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(CommentWriteActivity.this, volleyError.getMessage().toString(), Toast.LENGTH_LONG).show();
                     }
                 }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                //Converting Bitmap to String
-                String image = getStringImage(bitmap);
 
                 //Getting Image Name
-                String title = write_title.getText().toString().trim();
                 String content = write_content.getText().toString().trim();
                 String email = pref.getString("email","");
                 //Creating parameters
                 Map<String,String> params = new Hashtable<String, String>();
 
-                //Adding parameters
-                params.put("image", image);
-                params.put("title", title);
                 params.put("content",content);
                 params.put("email",email);
                 params.put("course",walk_name);
@@ -162,21 +133,5 @@ public class CommunityWriteActivity extends AppCompatActivity {
 
         //Adding request to the queue
         requestQueue.add(stringRequest);
-    }
-
-
-    public String getStringImage(Bitmap bmp){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
-        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-        return encodedImage;
-    }
-
-    private void showFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 }

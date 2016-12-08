@@ -2,7 +2,7 @@ package com.example.ankwinam.myapplication;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,18 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 /**
  * Created by axx42 on 2016-11-27.
  */
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.ViewHolder> {
     Context context;
     List<Community_item> items;
     int item_layout;
-    public RecyclerAdapter(Context context, List<Community_item> items, int item_layout) {
+    public CommunityAdapter(Context context, List<Community_item> items, int item_layout) {
         this.context=context;
         this.items=items;
         this.item_layout=item_layout;
@@ -49,7 +48,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,item.getTitle(), Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(context,CommentActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("walk_name",item.walk_name);
+                i.putExtra("date",item.date);
+                i.putExtra("content",item.content);
+                i.putExtra("id",item.id);
+                context.startActivity(i);
             }
         });
     }

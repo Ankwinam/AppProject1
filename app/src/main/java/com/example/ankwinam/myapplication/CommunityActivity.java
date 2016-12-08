@@ -1,7 +1,6 @@
 package com.example.ankwinam.myapplication;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,21 +9,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by axx42 on 2016-11-27.
@@ -55,6 +51,7 @@ public class CommunityActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
                 Intent write = new Intent(CommunityActivity.this, CommunityWriteActivity.class);
                 write.putExtra("walk_name",walk_name);
                 startActivity(write);
@@ -75,6 +72,7 @@ public class CommunityActivity extends AppCompatActivity {
 
     protected void showList(){
         try {
+            Log.e("Check",myJSON);
             JSONObject jsonObj = new JSONObject(myJSON);
             boards = jsonObj.getJSONArray(TAG_RESULTS);
             info_list = new ArrayList<Community_item>();
@@ -85,43 +83,23 @@ public class CommunityActivity extends AppCompatActivity {
                 String url = c.getString("img");
                 String image_url = URLEncoder.encode(url,"UTF-8");
                 image_url = image_url.replace("+","%20").replace("%3A",":").replace("%2F","/");
+                String content = c.getString("contents");
+                String date = c.getString("created_at");
+                String email = c.getString("id");
 
-                Log.e("Check1",id);
-                Log.e("Check2",url);
-                Log.e("Check3",image_url);
+//                Log.e("Check1",id);
+//                Log.e("Check2",url);
+//                Log.e("Check3",image_url);
 
-                Community_item data = new Community_item(image_url, id);
+                Community_item data = new Community_item(image_url, id,walk_name,content,date,email);
 
                 info_list.add(data);
             }
-            recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(),info_list,R.layout.community_item));
+            recyclerView.setAdapter(new CommunityAdapter(getApplicationContext(),info_list,R.layout.community_item));
 
             for(Community_item each : info_list){
                 each.loadImage(recyclerView);
             }
-
-//            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-////                    for(Walk_Info each : h_info_list){
-////                        each.cancel();
-////                    }
-//                    Intent intent = new Intent(getApplicationContext(), DetailActivity.class); // 다음넘어갈 화면
-//                    Walk_Info data = h_info_list.get(position);
-//                    intent.putExtra("walk_name",data.walk_name);
-//                    intent.putExtra("walk_level",data.level);
-//                    intent.putExtra("walk_area",data.area);
-//
-//                    Bitmap sendBitmap = data.image;
-//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                    sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//                    byte[] byteArray = stream.toByteArray();
-//
-//                    intent.putExtra("walk_image",byteArray);
-//
-//                    startActivity(intent);
-//                }
-//            });
 
         } catch (JSONException e) {
             e.printStackTrace();

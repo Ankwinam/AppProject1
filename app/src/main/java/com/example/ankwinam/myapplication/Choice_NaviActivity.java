@@ -33,6 +33,8 @@ public class Choice_NaviActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent localpage_go = new Intent(Choice_NaviActivity.this, Local_NaviActivity.class);
                 startActivity(localpage_go);
+//                Intent localpage_go = new Intent(Choice_NaviActivity.this, CommentActivity.class);
+//                startActivity(localpage_go);
             }
         });
 
