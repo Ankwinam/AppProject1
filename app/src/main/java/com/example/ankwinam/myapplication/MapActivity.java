@@ -1,9 +1,20 @@
 package com.example.ankwinam.myapplication;
 
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
 import net.daum.mf.map.api.CameraUpdateFactory;
 import net.daum.mf.map.api.MapPOIItem;
@@ -12,8 +23,17 @@ import net.daum.mf.map.api.MapPointBounds;
 import net.daum.mf.map.api.MapPolyline;
 import net.daum.mf.map.api.MapView;
 
-public class MapActivity extends AppCompatActivity implements MapView.MapViewEventListener{
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
+public class MapActivity extends AppCompatActivity implements MapView.MapViewEventListener, MapView.CurrentLocationEventListener, MapView.OpenAPIKeyAuthenticationResultListener, MapView.POIItemEventListener {
     public static String API_KEY = "2c4fd138e21a2323748097a5fdaa61ae";
+
+    private String state;
 
         @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,73 +48,243 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
 
             mapView.setMapViewEventListener(this);
 
+            MapView.setMapTilePersistentCacheEnabled(true);
+
+            mapView.setShowCurrentLocationMarker(true);
+
+            /////////////////////////////////////////////////////////////////////////////////////
+//// Using TedPermission library
+//            PermissionListener permissionlistener = new PermissionListener() {
+//                @Override
+//                public void onPermissionGranted() {
+//                    Toast.makeText(MapActivity.this, "권한 허가", Toast.LENGTH_SHORT).show();
+//
+//                    // MapView 객체생성 및 API Key 설정
+//                    MapView mapView = new MapView(MapActivity.this);
+//                    mapView.setDaumMapApiKey(API_KEY);
+//
+//                    ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.map_view);
+//                    mapViewContainer.addView(mapView);
+//
+//                    mapView.setMapViewEventListener(this);
+//
+//                    MapView.setMapTilePersistentCacheEnabled(true);
+//
+//                    mapView.setShowCurrentLocationMarker(true);
+//
+////                    // 중심점 변경
+////                    mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633), true);
+////
+////                    // 마커 생성 및 설정
+////                    MapPOIItem marker = new MapPOIItem();
+////                    marker.setItemName("Default Marker");
+////                    marker.setTag(0);
+////                    marker.setMapPoint(MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633));
+////                    marker.setMarkerType(MapPOIItem.MarkerType.BluePin); // 기본으로 제공하는 BluePin 마커 모양.
+////                    marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+////                    mapView.addPOIItem(marker);
+//                }
+//
+//                @Override
+//                public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+//                    Toast.makeText(MapActivity.this, "권한 거부\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+//                }
+//
+//            };
+//
+//            new TedPermission(this)
+//                    .setPermissionListener(permissionlistener)
+//                    .setRationaleMessage("지도 서비스를 사용하기 위해서는 위치 접근 권한이 필요해요")
+//                    .setDeniedMessage("왜 거부하셨어요...\n하지만 [설정] > [권한] 에서 권한을 허용할 수 있어요.")
+//                    .setPermissions(ACCESS_FINE_LOCATION)
+//                    .check();
+
         }
 
-    public void setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode trackingMode) {
 
-    }
 
     @Override
-    public void onMapViewInitialized(MapView mapView) {
-        //지도 이동
-        //MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633);
-        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(37.473206, 127.035333);
-        mapView.setMapCenterPoint(mapPoint, true);
+    public void onMapViewInitialized(final MapView mapView) {
+        // Using TedPermission library
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Toast.makeText(MapActivity.this, "권한 허가", Toast.LENGTH_SHORT).show();
 
-        //마커 생성
-        MapPOIItem marker = new MapPOIItem();
-        marker.setItemName("Default Marker");
-        marker.setTag(0);
-        marker.setMapPoint(mapPoint);
-        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);  //기본으로 제공하는 BluePin 마커 모양
-        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); //마커를 클릭했을때 기본으로 제공하는 RedPin 마커 모양
+                //지도 이동
+                //MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633);
+                MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(37.473206, 127.035333);
+                mapView.setMapCenterPoint(mapPoint, true);
 
-        //마커 추가
-        mapView.addPOIItem(marker);
+                MapPoint mapPoint2 = MapPoint.mapPointWithGeoCoord(37.472943, 127.034134);
+                //mapView.setMapCenterPoint(mapPoint2, true);
 
-        MapPolyline polyline = new MapPolyline();
-        polyline.setTag(1000);
-        polyline.setLineColor(Color.argb(128, 255, 51, 0)); // Polyline 컬러 지정.
+                //마커 생성
+                MapPOIItem marker = new MapPOIItem();
+                marker.setItemName("양재천 산책길");
+                marker.setTag(0);
+                marker.setMapPoint(mapPoint);
+                marker.setMarkerType(MapPOIItem.MarkerType.BluePin);  //기본으로 제공하는 BluePin 마커 모양
+                marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); //마커를 클릭했을때 기본으로 제공하는 RedPin 마커 모양
+
+                MapPOIItem marker2 = new MapPOIItem();
+                marker2.setItemName("내 위치");
+                marker2.setTag(1);
+                marker2.setMapPoint(mapPoint2);
+                marker2.setMarkerType(MapPOIItem.MarkerType.YellowPin);
+
+                //마커 추가
+                mapView.addPOIItem(marker);
+                mapView.addPOIItem(marker2);
+
+                MapPolyline polyline = new MapPolyline();
+                polyline.setTag(1000);
+                polyline.setLineColor(Color.argb(200, 255, 51, 5)); // Polyline 컬러 지정.
 
 // Polyline 좌표 지정.
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473206, 127.035333));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.472943, 127.034134));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.471748, 127.032526));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.470290, 127.031072));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.467718, 127.029540));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.467596, 127.028775));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.467955, 127.028740));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.468674, 127.029263));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.469413, 127.029926));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.470162, 127.030411));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.471631, 127.031872));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.472167, 127.032459));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.472390, 127.032554));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.472790, 127.033090));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473200, 127.033798));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473529, 127.034915));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473833, 127.036382));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.474714, 127.037518));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.474729, 127.038034));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.475225, 127.039502));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.479573, 127.043519));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.479353, 127.043938));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.475176, 127.040449));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.474715, 127.040008));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.474052, 127.038835));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473880, 127.038235));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473353, 127.037878));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473277, 127.037718));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473434, 127.036541));
-        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473206, 127.035333));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473206, 127.035333));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.472943, 127.034134));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.471748, 127.032526));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.470290, 127.031072));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.467718, 127.029540));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.467596, 127.028775));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.467955, 127.028740));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.468674, 127.029263));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.469413, 127.029926));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.470162, 127.030411));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.471631, 127.031872));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.472167, 127.032459));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.472390, 127.032554));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.472790, 127.033090));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473200, 127.033798));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473529, 127.034915));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473833, 127.036382));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.474714, 127.037518));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.474729, 127.038034));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.475225, 127.039502));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.479573, 127.043519));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.479353, 127.043938));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.475176, 127.040449));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.474715, 127.040008));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.474052, 127.038835));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473880, 127.038235));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473353, 127.037878));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473277, 127.037718));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473434, 127.036541));
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473206, 127.035333));
 
 // Polyline 지도에 올리기.
-        mapView.addPolyline(polyline);
+                mapView.addPolyline(polyline);
 
 // 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
-        MapPointBounds mapPointBounds = new MapPointBounds(polyline.getMapPoints());
-        int padding = 100; // px
-        mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding));
+                MapPointBounds mapPointBounds = new MapPointBounds(polyline.getMapPoints());
+                int padding = 100; // px
+                mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding));
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Toast.makeText(MapActivity.this, "권한 거부\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+        };
+
+        new TedPermission(this)
+                .setPermissionListener(permissionlistener)
+                .setRationaleMessage("지도 서비스를 사용하기 위해서는 위치 접근 권한이 필요해요")
+                .setDeniedMessage("왜 거부하셨어요...\n하지만 [설정] > [권한] 에서 권한을 허용할 수 있어요.")
+                .setPermissions(ACCESS_FINE_LOCATION)
+                .check();
+
+//        //지도 이동
+//        //MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633);
+//        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(37.473206, 127.035333);
+//        mapView.setMapCenterPoint(mapPoint, true);
+//
+//        MapPoint mapPoint2 = MapPoint.mapPointWithGeoCoord(37.472943, 127.034134);
+//        //mapView.setMapCenterPoint(mapPoint2, true);
+//
+//        //마커 생성
+//        MapPOIItem marker = new MapPOIItem();
+//        marker.setItemName("양재천 산책길");
+//        marker.setTag(0);
+//        marker.setMapPoint(mapPoint);
+//        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);  //기본으로 제공하는 BluePin 마커 모양
+//        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); //마커를 클릭했을때 기본으로 제공하는 RedPin 마커 모양
+//
+//        MapPOIItem marker2 = new MapPOIItem();
+//        marker2.setItemName("내 위치");
+//        marker2.setTag(1);
+//        marker2.setMapPoint(mapPoint2);
+//        marker2.setMarkerType(MapPOIItem.MarkerType.YellowPin);
+//
+//        //마커 추가
+//        mapView.addPOIItem(marker);
+//        mapView.addPOIItem(marker2);
+//
+//        MapPolyline polyline = new MapPolyline();
+//        polyline.setTag(1000);
+//        polyline.setLineColor(Color.argb(200, 255, 51, 5)); // Polyline 컬러 지정.
+//
+//// Polyline 좌표 지정.
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473206, 127.035333));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.472943, 127.034134));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.471748, 127.032526));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.470290, 127.031072));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.467718, 127.029540));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.467596, 127.028775));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.467955, 127.028740));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.468674, 127.029263));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.469413, 127.029926));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.470162, 127.030411));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.471631, 127.031872));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.472167, 127.032459));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.472390, 127.032554));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.472790, 127.033090));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473200, 127.033798));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473529, 127.034915));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473833, 127.036382));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.474714, 127.037518));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.474729, 127.038034));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.475225, 127.039502));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.479573, 127.043519));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.479353, 127.043938));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.475176, 127.040449));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.474715, 127.040008));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.474052, 127.038835));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473880, 127.038235));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473353, 127.037878));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473277, 127.037718));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473434, 127.036541));
+//        polyline.addPoint(MapPoint.mapPointWithGeoCoord(37.473206, 127.035333));
+//
+//// Polyline 지도에 올리기.
+//        mapView.addPolyline(polyline);
+//
+//// 지도뷰의 중심좌표와 줌레벨을 Polyline이 모두 나오도록 조정.
+//        MapPointBounds mapPointBounds = new MapPointBounds(polyline.getMapPoints());
+//        int padding = 100; // px
+//        mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding));
+
+
+
+        //좌표 사이의 거리 재기
+        double distance;
+        String meter;
+
+        Location locationA = new Location("point A");
+        locationA.setLongitude(127.035333);
+        locationA.setLatitude(37.473206);
+        Location locationB = new Location("point B");
+        locationB.setLongitude(127.034134);
+        locationB.setLatitude(37.472943);
+
+        distance = (int)locationA.distanceTo(locationB);
+        meter = Double.toString(distance);
+
+        TextView distanceoutput = (TextView)findViewById(R.id.mapdistance);
+        distanceoutput.setText("거리 : "+meter+ " m");
+
     }
 
     @Override
@@ -109,6 +299,9 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
 
     @Override
     public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
+        //현위치, 나침반 모드
+        mapView.setCurrentLocationEventListener(this);
+        mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
 
     }
 
@@ -134,6 +327,51 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
 
     @Override
     public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
+
+    }
+
+    @Override
+    public void onCurrentLocationUpdate(MapView mapView, MapPoint mapPoint, float v) {
+
+    }
+
+    @Override
+    public void onCurrentLocationDeviceHeadingUpdate(MapView mapView, float v) {
+
+    }
+
+    @Override
+    public void onCurrentLocationUpdateFailed(MapView mapView) {
+
+    }
+
+    @Override
+    public void onCurrentLocationUpdateCancelled(MapView mapView) {
+
+    }
+
+    @Override
+    public void onDaumMapOpenAPIKeyAuthenticationResult(MapView mapView, int i, String s) {
+
+    }
+
+    @Override
+    public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
+
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem) {
+
+    }
+
+    @Override
+    public void onCalloutBalloonOfPOIItemTouched(MapView mapView, MapPOIItem mapPOIItem, MapPOIItem.CalloutBalloonButtonType calloutBalloonButtonType) {
+
+    }
+
+    @Override
+    public void onDraggablePOIItemMoved(MapView mapView, MapPOIItem mapPOIItem, MapPoint mapPoint) {
 
     }
 
