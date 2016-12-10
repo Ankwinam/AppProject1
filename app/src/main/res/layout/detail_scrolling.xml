@@ -88,6 +88,140 @@
                     <!--android:layout_height="match_parent" />-->
             <!--</LinearLayout>-->
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="65dp">
+
+                        <ImageButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/icon_before_walk"
+                            android:id="@+id/icon_walk"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:layout_weight="1"
+                            android:background="@color/cardview_light_background"
+                            android:onClick="onClickIcon" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="65dp">
+
+                        <ImageButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/icon_before_bicycle"
+                            android:id="@+id/icon_bicycle"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:layout_weight="1"
+                            android:background="@color/cardview_light_background"
+                            android:onClick="onClickIcon" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="65dp">
+
+                        <ImageButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/icon_before_dog"
+                            android:id="@+id/icon_dog"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:layout_weight="1"
+                            android:background="@color/cardview_light_background"
+                            android:onClick="onClickIcon" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="65dp">
+
+                        <ImageButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/icon_before_baby"
+                            android:id="@+id/icon_baby"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:layout_weight="1"
+                            android:background="@color/cardview_light_background"
+                            android:onClick="onClickIcon" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.3">
+
+                    <TextView
+                        android:text="0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/num_walk"
+                        android:layout_weight="1"
+                        android:background="@color/cardview_light_background"
+                        android:gravity="top|center_vertical|center_horizontal" />
+
+                    <TextView
+                        android:text="0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/num_bicycle"
+                        android:layout_weight="1"
+                        android:background="@color/cardview_light_background"
+                        android:gravity="top|center_vertical|center_horizontal" />
+
+                    <TextView
+                        android:text="0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/num_pet"
+                        android:layout_weight="1"
+                        android:background="@color/cardview_light_background"
+                        android:gravity="top|center_vertical|center_horizontal" />
+
+                    <TextView
+                        android:text="0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/num_baby"
+                        android:layout_weight="1"
+                        android:background="@color/cardview_light_background"
+                        android:gravity="top|center_vertical|center_horizontal" />
+                </LinearLayout>
+
+            </LinearLayout>
+
             <TextView
                 android:text="@string/large_text"
                 android:layout_width="match_parent"

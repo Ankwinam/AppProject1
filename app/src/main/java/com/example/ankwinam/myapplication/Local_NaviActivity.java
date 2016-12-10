@@ -154,7 +154,7 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
             SharedPreferences pref = getSharedPreferences("auto_login",MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
             editor.clear();
-            editor.putBoolean("auto",false);
+            editor.putString("auto","false");
             editor.commit();
 
             Intent go_main = new Intent(Local_NaviActivity.this, MainActivity.class);

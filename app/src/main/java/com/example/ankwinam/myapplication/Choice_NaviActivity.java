@@ -18,14 +18,17 @@ import android.widget.Toast;
 
 public class Choice_NaviActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-// 바꿈
+
+    private SharedPreferences pref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.choice_navigation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        pref = getSharedPreferences("auto_login",MODE_PRIVATE);
+        Toast.makeText(getApplicationContext(),pref.getString("email","")+"님 반갑습니다.",Toast.LENGTH_SHORT);
         //지역 별 페이지 버튼 Intent
         ImageButton local_go = (ImageButton)findViewById(R.id.local_go);
         local_go.setOnClickListener(new View.OnClickListener() {

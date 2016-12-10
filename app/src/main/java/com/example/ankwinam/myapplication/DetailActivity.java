@@ -1,6 +1,7 @@
 package com.example.ankwinam.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +26,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 
 /**
@@ -43,15 +46,22 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
     Button Tracking;
     Button Community;
 
+    ImageButton Icon_walk, Icon_bicycle, Icon_pet, Icon_baby;
+    TextView num_walk, num_bicycle, num_pet, num_baby;
+    int[] checked;
+
     double mapX = 0;
     double mapY = 0;
     String walk_name;
 
+    public SharedPreferences pref;
+    public SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_scrolling);
 
+        checked = new int[4];
 //        ///////////////////////////////////////맵///////////////////////////////////////
 //        MapView mapView = new MapView(this);
 //        mapView.setDaumMapApiKey(API_KEY);
@@ -90,6 +100,20 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
         level = (TextView) findViewById(R.id.detail_level);
         info = (TextView) findViewById(R.id.detail_Info);
         imageView = (ImageView) findViewById(R.id.detail_imageView);
+
+
+        //----------------------------------------------------- 추천수 기능 --------------------------------
+        Icon_walk = (ImageButton) findViewById(R.id.icon_walk);
+        Icon_bicycle = (ImageButton) findViewById(R.id.icon_bicycle);
+        Icon_pet = (ImageButton) findViewById(R.id.icon_dog);
+        Icon_baby = (ImageButton) findViewById(R.id.icon_baby);
+        num_walk = (TextView) findViewById(R.id.num_walk);
+        num_bicycle = (TextView) findViewById(R.id.num_bicycle);
+        num_pet = (TextView) findViewById(R.id.num_pet);
+        num_baby = (TextView) findViewById(R.id.num_baby);
+
+
+        // --------------------------------------------------- 추천수 기능 ---------------------------------
 
         Intent intent = getIntent();
         walk_name = intent.getStringExtra("walk_name");
@@ -141,6 +165,100 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
             e.printStackTrace();
         }
     }
+    public void onClickIcon(View v){
+        int i;
+        //디비에서 일치하는 유저-산책로 컬럼잇는지 확인
+        pref = getSharedPreferences("like",MODE_PRIVATE);
+        if(pref.getString("initial","").equals("true")){
+            Log.e("TT","처음");
+//            editor = pref.edit();
+//            editor.putString("initial","true");
+//            editor.commit();
+            //DB 유저-산책로 디비 생성
+        }else {
+            Log.e("TT","처음 아님");
+        }
+
+        int before=0;
+        for(int j=0; j<4; j++){
+            if(checked[j]==1){
+                before=j;
+                checked[before] = 0;
+                switch (before){
+                    case 0:
+                        i = Integer.parseInt(num_walk.getText().toString());
+                        i--;
+                        num_walk.setText(i+"");
+                        Log.e("sumin4",before+"");
+                        break;
+                    case 1:
+                        i = Integer.parseInt(num_bicycle.getText().toString());
+                        i--;
+                        num_bicycle.setText(i+"");
+                        Log.e("sumin4",before+"");
+                        break;
+                    case 2:
+                        i = Integer.parseInt(num_pet.getText().toString());
+                        i--;
+                        num_pet.setText(i+"");
+                        Log.e("sumin4",before+"");
+                        break;
+                    case 3:
+                        i = Integer.parseInt(num_baby.getText().toString());
+                        i--;
+                        num_baby.setText(i+"");
+                        Log.e("sumin4",before+"");
+                        break;
+                }
+                break;
+            }
+        }
+
+        switch (v.getId()) {
+            case R.id.icon_walk:
+                Icon_walk.setImageResource(R.drawable.icon_walk);
+                Icon_bicycle.setImageResource(R.drawable.icon_before_bicycle);
+                Icon_pet.setImageResource(R.drawable.icon_before_dog);
+                Icon_baby.setImageResource(R.drawable.icon_before_baby);
+                i = Integer.parseInt(num_walk.getText().toString());
+                i++;
+                num_walk.setText(i+"");
+                checked[0] = 1;
+                break;
+            case R.id.icon_bicycle:
+                Icon_walk.setImageResource(R.drawable.icon_before_walk);
+                Icon_bicycle.setImageResource(R.drawable.icon_bicycle);
+                Icon_pet.setImageResource(R.drawable.icon_before_dog);
+                Icon_baby.setImageResource(R.drawable.icon_before_baby);
+                i = Integer.parseInt(num_bicycle.getText().toString());
+                i++;
+                num_bicycle.setText(i+"");
+                checked[1] = 1;
+                break;
+            case R.id.icon_dog:
+                Icon_walk.setImageResource(R.drawable.icon_before_walk);
+                Icon_bicycle.setImageResource(R.drawable.icon_before_bicycle);
+                Icon_pet.setImageResource(R.drawable.icon_dog);
+                Icon_baby.setImageResource(R.drawable.icon_before_baby);
+                i = Integer.parseInt(num_pet.getText().toString());
+                i++;
+                num_pet.setText(i+"");
+                checked[2] = 1;
+                break;
+            case R.id.icon_baby:
+                Icon_walk.setImageResource(R.drawable.icon_before_walk);
+                Icon_bicycle.setImageResource(R.drawable.icon_before_bicycle);
+                Icon_pet.setImageResource(R.drawable.icon_before_dog);
+                Icon_baby.setImageResource(R.drawable.icon_baby);
+                i = Integer.parseInt(num_baby.getText().toString());
+                i++;
+                num_baby.setText(i+"");
+                checked[3] = 1;
+                break;
+        }
+
+    }
+
     //Json파일 불러오는 Method
     public String loadJSONFromAsset(String url) {
         String json = null;
@@ -158,6 +276,8 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
         }
         return json;
     }
+
+
 
 //    @Override
 //    public void onMapViewInitialized(MapView mapView) {

@@ -95,7 +95,11 @@ public class MainActivity extends AppCompatActivity {
 //                }else{
 //                    Toast.makeText(getApplicationContext(),"로그인 실패",Toast.LENGTH_SHORT).show();
 //                }
-
+                editor = pref.edit();
+                editor.putString("email",email_Input.getText().toString());
+                editor.putString("pw",password_Input.getText().toString());
+                editor.putString("auto","true");
+                editor.commit();
                 Intent login = new Intent(MainActivity.this, Choice_NaviActivity.class);
                 startActivity(login);
                 finish();
@@ -131,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "회원가입 완료", Toast.LENGTH_SHORT).show();
             email_Input.setText(data.getStringExtra("EMAIL"));
         }
-
     }
 
     private class AttemptLogin extends AsyncTask {
@@ -169,6 +172,4 @@ public class MainActivity extends AppCompatActivity {
             super.onPreExecute();
         }
     }
-
-
 }
