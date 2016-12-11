@@ -19,14 +19,25 @@ public class Walk_Info {
     public String level;
     public Bitmap image;
     public String imgUrl;
+
+    String walk;
+    String bicycle;
+    String pet;
+    String baby;
+
     public WalkListAdapter wat;
     private ImageLoadTask loadTask;
 
-    Walk_Info(String walk_name, String area, String level, String imgUrl){
+    Walk_Info(String walk_name, String area, String level, String imgUrl,String walk,String bicycle,String pet,String baby){
         this.imgUrl = imgUrl;
         this.walk_name =walk_name;
         this.area = area;
         this.level = level;
+
+        this.walk =walk;
+        this.bicycle = bicycle;
+        this.pet = pet;
+        this.baby = baby;
 
         this.image = null;
 
@@ -96,7 +107,8 @@ public class Walk_Info {
             connection.connect();
             InputStream input = connection.getInputStream();
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
+            Bitmap resized = Bitmap.createScaledBitmap(myBitmap,300,250,true);
+            return resized;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

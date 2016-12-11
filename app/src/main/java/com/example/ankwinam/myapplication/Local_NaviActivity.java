@@ -125,7 +125,7 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-            // Handle the camera action
+        // Handle the camera action
         if (id == R.id.menu_home) {
             Toast.makeText(getApplicationContext(), "홈", Toast.LENGTH_SHORT).show();
             Intent go_home = new Intent(Local_NaviActivity.this, Choice_NaviActivity.class);
@@ -167,7 +167,7 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
     }
 
 
-//리스트 뷰
+    //리스트 뷰
     protected void showList(){
         try {
             list = (ListView) findViewById(R.id.listView_area);
@@ -180,12 +180,15 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
                 String id = c.getString("walk_name");
                 String name = "자치구" + c.getString("area");
                 String address = c.getString("level")+"";
-
+                String walk = c.getString("walk");
+                String bicycle = c.getString("bicycle");
+                String pet = c.getString("pet");
+                String baby = c.getString("baby");
                 String image_url = URLEncoder.encode(id,"UTF-8");
                 image_url = image_url.replace("+","%20");
                 String imgUrl = BASE_URL+ "/walks/" + image_url + ".jpg";
 
-                Walk_Info data = new Walk_Info(id, name, address, imgUrl);
+                Walk_Info data = new Walk_Info(id, name, address, imgUrl, walk, bicycle, pet, baby);
                 h_info_list.add(data);
 
             }
@@ -208,6 +211,10 @@ public class Local_NaviActivity extends AppCompatActivity implements NavigationV
                     intent.putExtra("walk_name",data.walk_name);
                     intent.putExtra("walk_level",data.level);
                     intent.putExtra("walk_area",data.area);
+                    intent.putExtra("walk",data.walk);
+                    intent.putExtra("bicycle",data.bicycle);
+                    intent.putExtra("baby",data.baby);
+                    intent.putExtra("pet",data.pet);
 
                     Bitmap sendBitmap = data.image;
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();

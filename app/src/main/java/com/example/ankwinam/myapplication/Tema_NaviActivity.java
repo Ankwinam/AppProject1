@@ -130,7 +130,7 @@ public class Tema_NaviActivity extends AppCompatActivity implements NavigationVi
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-            // Handle the camera action
+        // Handle the camera action
         if (id == R.id.menu_home) {
             Toast.makeText(getApplicationContext(), "홈", Toast.LENGTH_SHORT).show();
             Intent go_home = new Intent(Tema_NaviActivity.this, Choice_NaviActivity.class);
@@ -151,7 +151,7 @@ public class Tema_NaviActivity extends AppCompatActivity implements NavigationVi
         } else if (id == R.id.menu_stamp) {
             Toast.makeText(getApplicationContext(), "스탬프", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.menu_jjim) {
-                Toast.makeText(getApplicationContext(),"찜 한 산책로",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"찜 한 산책로",Toast.LENGTH_SHORT).show();
             Intent go_jjim = new Intent(Tema_NaviActivity.this, JJim_NaviActivity.class);
             startActivity(go_jjim);
             finish();
@@ -175,17 +175,20 @@ public class Tema_NaviActivity extends AppCompatActivity implements NavigationVi
             peoples = jsonObj.getJSONArray(TAG_RESULTS);
             h_info_list = new ArrayList<Walk_Info>();
 
-            for(int i=0;i<20;i++){
+            for(int i=0;i<15;i++){
                 JSONObject c = peoples.getJSONObject(i);
                 String id = c.getString("walk_name");
                 String name = "자치구" + c.getString("area");
-                String address = "코스레벨" + c.getString("level");
-
+                String address = c.getString("level")+"";
+                String walk = c.getString("walk");
+                String bicycle = c.getString("bicycle");
+                String pet = c.getString("pet");
+                String baby = c.getString("baby");
                 String image_url = URLEncoder.encode(id,"UTF-8");
                 image_url = image_url.replace("+","%20");
                 String imgUrl = BASE_URL+ "/walks/" + image_url + ".jpg";
 
-                Walk_Info data = new Walk_Info(id, name, address, imgUrl);
+                Walk_Info data = new Walk_Info(id, name, address, imgUrl, walk, bicycle, pet, baby);
                 h_info_list.add(data);
             }
             myadapter = new WalkListAdapter(getApplicationContext(),R.layout.tema_info, h_info_list);
@@ -193,7 +196,7 @@ public class Tema_NaviActivity extends AppCompatActivity implements NavigationVi
 
             int i = 0;
             for(Walk_Info each : h_info_list){
-                if(i<20) break; //상위 20개만 load
+                if(i>15) break; //상위 20개만 load
                 i++;
                 each.loadImage(myadapter);
             }
@@ -201,17 +204,26 @@ public class Tema_NaviActivity extends AppCompatActivity implements NavigationVi
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-                    for(Walk_Info each : h_info_list){
-                        each.cancel();
-                    }
-                    Intent intent = new Intent(getApplicationContext(), TemaResultActivity.class); // 다음넘어갈 화면
-                    Bitmap sendBitmap = h_info_list.get(position).image;
+//                    for(Walk_Info each : h_info_list){
+//                        each.cancel();
+//                    }
+                    Intent intent = new Intent(getApplicationContext(), DetailActivity.class); // 다음넘어갈 화면
+                    Walk_Info data = h_info_list.get(position);
+                    intent.putExtra("walk_name",data.walk_name);
+                    intent.putExtra("walk_level",data.level);
+                    intent.putExtra("walk_area",data.area);
+                    intent.putExtra("walk",data.walk);
+                    intent.putExtra("bicycle",data.bicycle);
+                    intent.putExtra("baby",data.baby);
+                    intent.putExtra("pet",data.pet);
 
+                    Bitmap sendBitmap = data.image;
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] byteArray = stream.toByteArray();
 
-                    intent.putExtra("image",byteArray);
+                    intent.putExtra("walk_image",byteArray);
+
                     startActivity(intent);
                 }
             });
@@ -251,7 +263,6 @@ public class Tema_NaviActivity extends AppCompatActivity implements NavigationVi
 
             @Override
             protected void onPostExecute(String result){
-
                 myJSON=result;
                 showList();
             }

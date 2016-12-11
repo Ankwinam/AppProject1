@@ -64,9 +64,7 @@ public class Community_item {
         protected Bitmap doInBackground(String... param) {
             Log.i("ImageLoadTask", "Attempting to load image URL: " + param[0]);
             try {
-                Bitmap b = Walk_Info.getBitmapFromURL(param[0]);
-                // 사이즈 조정 필요함!!
-//                b = Bitmap.createScaledBitmap(b, 1024, 2048, true);
+                Bitmap b = getBitmap(param[0]);
                 return b;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -86,6 +84,22 @@ public class Community_item {
             } else {
                 Log.e("ImageLoadTask", "Failed to load " + imgUrl + " image");
             }
+        }
+    }
+
+    public Bitmap getBitmap(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            Bitmap resized = Bitmap.createScaledBitmap(myBitmap, 1200, 800, true);
+            return resized;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

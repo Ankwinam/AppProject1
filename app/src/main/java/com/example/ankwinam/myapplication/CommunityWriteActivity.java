@@ -95,7 +95,7 @@ public class CommunityWriteActivity extends AppCompatActivity {
                 options.inSampleSize = 4;
                 //Getting the Bitmap from Gallery
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 1024, 2048, true);
+                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 1200, 1000, true);
                 bitmap = resized;
                 //Setting the Bitmap to ImageView
                 imageButton.setImageBitmap(bitmap);

@@ -1,5 +1,6 @@
 package com.example.ankwinam.myapplication;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -13,7 +14,15 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.GoogleMap;
 
 import net.daum.mf.map.api.MapPOIItem;
@@ -27,6 +36,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Map;
 
 
 /**
@@ -49,10 +60,14 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
     ImageButton Icon_walk, Icon_bicycle, Icon_pet, Icon_baby;
     TextView num_walk, num_bicycle, num_pet, num_baby;
     int[] checked;
+    final static String kind[] = new String[]{"WALK_LIKE", "BICYCLE_LIKE", "PET_LIKE", "BABY_LIKE"};;
 
     double mapX = 0;
     double mapY = 0;
     String walk_name;
+    String rewalk_name;
+
+    private String UPLOAD_URL ="https://today-walks-lee-s-h.c9users.io/update_like.php";
 
     public SharedPreferences pref;
     public SharedPreferences.Editor editor;
@@ -61,16 +76,9 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_scrolling);
 
+        Intent intent = getIntent();
         checked = new int[4];
-//        ///////////////////////////////////////맵///////////////////////////////////////
-//        MapView mapView = new MapView(this);
-//        mapView.setDaumMapApiKey(API_KEY);
-//
-//        ViewGroup mapViewContainer = (ViewGroup) findViewById(R.id.detail_map);
-//        mapViewContainer.addView(mapView);
-//
-//        mapView.setMapViewEventListener(this);
-//        /////////////////////////////////////////////////////////////////////////////////
+
 
         Tracking = (Button) findViewById(R.id.detail_tracking_btn);
         Community = (Button) findViewById(R.id.detail_community_btn);
@@ -80,7 +88,6 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
             public void onClick(View v) {
                 Intent i = new Intent(DetailActivity.this, MapActivity.class);
                 //좌표정보 받아와야 해!
-
                 startActivity(i);
             }
         });
@@ -101,6 +108,9 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
         info = (TextView) findViewById(R.id.detail_Info);
         imageView = (ImageView) findViewById(R.id.detail_imageView);
 
+        walk_name = intent.getStringExtra("walk_name");
+        String walk_level = intent.getStringExtra("walk_level");
+        String walk_area = intent.getStringExtra("walk_area");
 
         //----------------------------------------------------- 추천수 기능 --------------------------------
         Icon_walk = (ImageButton) findViewById(R.id.icon_walk);
@@ -112,20 +122,43 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
         num_pet = (TextView) findViewById(R.id.num_pet);
         num_baby = (TextView) findViewById(R.id.num_baby);
 
+        num_walk.setText(intent.getStringExtra("walk"));
+        num_bicycle.setText(intent.getStringExtra("bicycle"));
+        num_pet.setText(intent.getStringExtra("pet"));
+        num_baby.setText(intent.getStringExtra("baby"));
+
+        //해당 산책로에 대한 앱 데이터 get
+        rewalk_name = walk_name.replace(" ","");
+        Log.e("sumin1",walk_name);
+        pref = getSharedPreferences("Like",MODE_PRIVATE);
+        String current = pref.getString(rewalk_name,"");
+        Log.e("sumin2",current);
+        switch (current){
+            case "0":
+                Icon_walk.setImageResource(R.drawable.icon_walk);
+                break;
+            case "1":
+                Icon_bicycle.setImageResource(R.drawable.icon_bicycle);
+                break;
+            case "2":
+                Icon_pet.setImageResource(R.drawable.icon_dog);
+                break;
+            case "3":
+                Icon_baby.setImageResource(R.drawable.icon_baby);
+                break;
+        }
 
         // --------------------------------------------------- 추천수 기능 ---------------------------------
 
-        Intent intent = getIntent();
-        walk_name = intent.getStringExtra("walk_name");
 
-        String walk_level = intent.getStringExtra("walk_level");
-        String walk_area = intent.getStringExtra("walk_area");
+
 
         byte[] arr = getIntent().getByteArrayExtra("walk_image");
         image = BitmapFactory.decodeByteArray(arr, 0, arr.length);
+        Bitmap resized = Bitmap.createScaledBitmap(image,1200,700,true);
 
         main_name.setText(walk_name);
-        imageView.setImageBitmap(image);
+        imageView.setImageBitmap(resized);
         area.setText(walk_area);
         level.setText("난이도 " + walk_level);
 
@@ -165,53 +198,34 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
             e.printStackTrace();
         }
     }
-    public void onClickIcon(View v){
-        int i;
-        //디비에서 일치하는 유저-산책로 컬럼잇는지 확인
-        pref = getSharedPreferences("like",MODE_PRIVATE);
-        if(pref.getString("initial","").equals("true")){
-            Log.e("TT","처음");
-//            editor = pref.edit();
-//            editor.putString("initial","true");
-//            editor.commit();
-            //DB 유저-산책로 디비 생성
-        }else {
-            Log.e("TT","처음 아님");
-        }
 
-        int before=0;
-        for(int j=0; j<4; j++){
-            if(checked[j]==1){
-                before=j;
-                checked[before] = 0;
-                switch (before){
-                    case 0:
-                        i = Integer.parseInt(num_walk.getText().toString());
-                        i--;
-                        num_walk.setText(i+"");
-                        Log.e("sumin4",before+"");
-                        break;
-                    case 1:
-                        i = Integer.parseInt(num_bicycle.getText().toString());
-                        i--;
-                        num_bicycle.setText(i+"");
-                        Log.e("sumin4",before+"");
-                        break;
-                    case 2:
-                        i = Integer.parseInt(num_pet.getText().toString());
-                        i--;
-                        num_pet.setText(i+"");
-                        Log.e("sumin4",before+"");
-                        break;
-                    case 3:
-                        i = Integer.parseInt(num_baby.getText().toString());
-                        i--;
-                        num_baby.setText(i+"");
-                        Log.e("sumin4",before+"");
-                        break;
-                }
+
+    public void onClickIcon(View v){
+        int i, before_i = 0;
+        editor = pref.edit();
+        String before = pref.getString(rewalk_name,"");
+
+        switch (before) {
+            case "0":
+                before_i = Integer.parseInt(num_walk.getText().toString());
+                before_i--;
+                num_walk.setText(before_i + "");
                 break;
-            }
+            case "1":
+                before_i = Integer.parseInt(num_bicycle.getText().toString());
+                before_i--;
+                num_bicycle.setText(before_i + "");
+                break;
+            case "2":
+                before_i = Integer.parseInt(num_pet.getText().toString());
+                before_i--;
+                num_pet.setText(before_i + "");
+                break;
+            case "3":
+                before_i = Integer.parseInt(num_baby.getText().toString());
+                before_i--;
+                num_baby.setText(before_i + "");
+                break;
         }
 
         switch (v.getId()) {
@@ -224,6 +238,14 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
                 i++;
                 num_walk.setText(i+"");
                 checked[0] = 1;
+                editor.putString(rewalk_name,"0");
+                editor.commit();
+                if(before == "0" || before == "1" || before == "2" || before == "3"){
+                    if(before == "0") break;
+                    uploadlike("both",walk_name,kind[0],Integer.toString(i),kind[Integer.parseInt(before)],Integer.toString(before_i));
+                }else {
+                    uploadlike("single",walk_name,kind[0],Integer.toString(i));
+                }
                 break;
             case R.id.icon_bicycle:
                 Icon_walk.setImageResource(R.drawable.icon_before_walk);
@@ -234,6 +256,14 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
                 i++;
                 num_bicycle.setText(i+"");
                 checked[1] = 1;
+                editor.putString(rewalk_name,"1");
+                editor.commit();
+                if(before == "0" || before == "1" || before == "2" || before == "3"){
+                    if(before == "1") break;
+                    uploadlike("both",walk_name,kind[1],Integer.toString(i),kind[Integer.parseInt(before)],Integer.toString(before_i));
+                }else {
+                    uploadlike("single",walk_name,kind[1],Integer.toString(i));
+                }
                 break;
             case R.id.icon_dog:
                 Icon_walk.setImageResource(R.drawable.icon_before_walk);
@@ -244,6 +274,14 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
                 i++;
                 num_pet.setText(i+"");
                 checked[2] = 1;
+                editor.putString(rewalk_name,"2");
+                editor.commit();
+                if(before == "0" || before == "1" || before == "2" || before == "3"){
+                    if(before == "2") break;
+                    uploadlike("both",walk_name,kind[2],Integer.toString(i),kind[Integer.parseInt(before)],Integer.toString(before_i));
+                }else {
+                    uploadlike("single",walk_name,kind[2],Integer.toString(i));
+                }
                 break;
             case R.id.icon_baby:
                 Icon_walk.setImageResource(R.drawable.icon_before_walk);
@@ -254,6 +292,14 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
                 i++;
                 num_baby.setText(i+"");
                 checked[3] = 1;
+                editor.putString(rewalk_name,"3");
+                editor.commit();
+                if(before == "0" || before == "1" || before == "2" || before == "3"){
+                    if(before == "3") break;
+                    uploadlike("both",walk_name,kind[3],Integer.toString(i),kind[Integer.parseInt(before)],Integer.toString(before_i));
+                }else {
+                    uploadlike("single",walk_name,kind[3],Integer.toString(i));
+                }
                 break;
         }
 
@@ -279,61 +325,96 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
 
 
 
-//    @Override
-//    public void onMapViewInitialized(MapView mapView) {
-////        //지도 이동
-////        MapPoint mapPoint = MapPoint.mapPointWithGeoCoord(mapX, mapY);
-////        mapView.setMapCenterPoint(mapPoint, true);
-////
-////        //마커 생성
-////        MapPOIItem marker = new MapPOIItem();
-////        marker.setItemName("Default Marker");
-////        marker.setTag(0);
-////        marker.setMapPoint(mapPoint);
-////        marker.setMarkerType(MapPOIItem.MarkerType.BluePin);  //기본으로 제공하는 BluePin 마커 모양
-////        marker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); //마커를 클릭했을때 기본으로 제공하는 RedPin 마커 모양
-////
-////        //마커 추가
-////        mapView.addPOIItem(marker);
-//    }
-//
-//    @Override
-//    public void onMapViewCenterPointMoved(MapView mapView, MapPoint mapPoint) {
-//
-//    }
-//
-//    @Override
-//    public void onMapViewZoomLevelChanged(MapView mapView, int i) {
-//
-//    }
-//
-//    @Override
-//    public void onMapViewSingleTapped(MapView mapView, MapPoint mapPoint) {
-//
-//    }
-//
-//    @Override
-//    public void onMapViewDoubleTapped(MapView mapView, MapPoint mapPoint) {
-//
-//    }
-//
-//    @Override
-//    public void onMapViewLongPressed(MapView mapView, MapPoint mapPoint) {
-//
-//    }
-//
-//    @Override
-//    public void onMapViewDragStarted(MapView mapView, MapPoint mapPoint) {
-//
-//    }
-//
-//    @Override
-//    public void onMapViewDragEnded(MapView mapView, MapPoint mapPoint) {
-//
-//    }
-//
-//    @Override
-//    public void onMapViewMoveFinished(MapView mapView, MapPoint mapPoint) {
-//
-//    }
+    private void uploadlike(final String type,final  String course,final  String select,final  String select_num,final  String before_select,final  String before_select_num){
+        //Showing the progress dialog
+        final ProgressDialog loading = ProgressDialog.show(this,"Uploading...","Please wait...",false,false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, UPLOAD_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        //Disimissing the progress dialog
+                        loading.dismiss();
+                        //Showing toast message of the response
+
+                        Toast.makeText(DetailActivity.this, "추천하기 완료" + s , Toast.LENGTH_LONG).show();
+                        Log.e("Check", "success");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        loading.dismiss();
+
+                        //Showing toast
+                        Toast.makeText(DetailActivity.this, volleyError.getMessage().toString(), Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Creating parameters
+                Map<String,String> params = new Hashtable<String, String>();
+
+                params.put("type",type);
+                params.put("course",walk_name);
+                params.put("select", select);
+                params.put("select_num", select_num);
+                params.put("before_select",before_select);
+                params.put("before_select_num",before_select_num);
+
+                //returning parameters
+                return params;
+            }
+        };
+        //Creating a Request Queue
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+    }
+
+    private void uploadlike(final String type,final  String course,final  String select,final  String select_num){
+        //Showing the progress dialog
+        final ProgressDialog loading = ProgressDialog.show(this,"Uploading...","Please wait...",false,false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, UPLOAD_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        //Disimissing the progress dialog
+                        loading.dismiss();
+                        //Showing toast message of the response
+
+                        Toast.makeText(DetailActivity.this, "추천하기 완료" + s , Toast.LENGTH_LONG).show();
+                        Log.e("Check", "success");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        loading.dismiss();
+
+                        //Showing toast
+                        Toast.makeText(DetailActivity.this, volleyError.getMessage().toString(), Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Creating parameters
+                Map<String,String> params = new Hashtable<String, String>();
+                params.put("type",type);
+                params.put("course",walk_name);
+                params.put("select", select);
+                params.put("select_num", select_num);
+
+                //returning parameters
+                return params;
+            }
+        };
+        //Creating a Request Queue
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
+    }
 }
