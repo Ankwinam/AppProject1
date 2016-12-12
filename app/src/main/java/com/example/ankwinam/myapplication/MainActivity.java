@@ -76,33 +76,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//                AttemptLogin attemptLogin= new AttemptLogin();
-//                attemptLogin.execute(email_Input.getText().toString(),password_Input.getText().toString(),"");
-//
-//
-//                while (successResult < 0) {
-//                }
-//
-//                if(successResult == 1) {
-//                    editor = pref.edit();
-//                    editor.putString("email",email_Input.getText().toString());
-//                    editor.putString("pw",password_Input.getText().toString());
-//                    editor.putString("auto","true");
-//                    editor.commit();
-//                    Intent login = new Intent(MainActivity.this, Choice_NaviActivity.class);
-//                    startActivity(login);
-//                    finish();
-//                }else{
-//                    Toast.makeText(getApplicationContext(),"로그인 실패",Toast.LENGTH_SHORT).show();
-//                }
-                editor = pref.edit();
-                editor.putString("email",email_Input.getText().toString());
-                editor.putString("pw",password_Input.getText().toString());
-                editor.putString("auto","true");
-                editor.commit();
-                Intent login = new Intent(MainActivity.this, Choice_NaviActivity.class);
-                startActivity(login);
-                finish();
+                AttemptLogin attemptLogin= new AttemptLogin();
+                attemptLogin.execute(email_Input.getText().toString(),password_Input.getText().toString(),"");
+
+
+                while (successResult < 0) {
+                }
+
+                if(successResult == 1) {
+                    editor = pref.edit();
+                    editor.putString("email",email_Input.getText().toString());
+                    editor.putString("pw",password_Input.getText().toString());
+                    editor.putString("auto","true");
+                    editor.commit();
+                    Intent login = new Intent(MainActivity.this, Choice_NaviActivity.class);
+                    startActivity(login);
+                    finish();
+                }else{
+                    Toast.makeText(getApplicationContext(),"로그인 실패",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

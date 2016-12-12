@@ -94,6 +94,8 @@ public class Choice_NaviActivity extends AppCompatActivity
             finish();
         } else if (id == R.id.menu_history) {
             Toast.makeText(getApplicationContext(), "내가 쓴 글", Toast.LENGTH_SHORT).show();
+            Intent go_his = new Intent(Choice_NaviActivity.this, CommunityHistoryActivity.class);
+            startActivity(go_his);
         } else if (id == R.id.menu_stamp) {
             Toast.makeText(getApplicationContext(), "스탬프", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.menu_jjim) {
