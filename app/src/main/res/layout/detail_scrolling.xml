@@ -5,236 +5,248 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ScrollView
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
+        android:layout_height="match_parent">
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:orientation="vertical"
-            android:weightSum="1">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/text_margin"
-                android:gravity="center"
-                android:textSize="30sp"
-                android:id="@+id/detail_name"
-                android:text="name" />
-
-            <TextView
-                android:text="area"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/detail_area"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textSize="18sp" />
-
-
-            <TextView
-                android:text="area"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/detail_level"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textSize="18sp" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_menu_camera"
-                android:id="@+id/detail_imageView"
-                android:layout_weight="0.07" />
-
+            android:layout_height="wrap_content">
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:text="커뮤니티"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/detail_community_btn"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:onClick="onClick"
-                    android:background="@drawable/round_button_main"
-                    android:layout_margin="10dp" />
-
-                <Button
-                    android:text="트래킹"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/detail_tracking_btn"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:onClick="onClick"
-                    android:background="@drawable/round_button_main"
-                    android:layout_margin="10dp" />
-
-            </LinearLayout>
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="200dp">-->
-                <!--<fragment-->
-                    <!--android:id="@+id/detail_map"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent" />-->
-            <!--</LinearLayout>-->
-
-            <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:weightSum="2">
+                android:layout_margin="8dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:gravity="center"
+                    android:textSize="30sp"
+                    android:id="@+id/detail_name"
+                    android:text="name" />
+
+                <TextView
+                    android:text="area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detail_area"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="18sp" />
+
+
+                <TextView
+                    android:text="area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detail_level"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_menu_camera"
+                    android:id="@+id/detail_imageView"
+                    android:layout_weight="0.07" />
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.7">
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:text="커뮤니티"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/detail_community_btn"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:onClick="onClick"
+                        android:background="@drawable/round_button_main"
+                        android:layout_margin="10dp" />
+
+                    <Button
+                        android:text="트래킹"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/detail_tracking_btn"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:onClick="onClick"
+                        android:background="@drawable/round_button_main"
+                        android:layout_margin="10dp" />
+
+                </LinearLayout>
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="200dp">-->
+                    <!--<fragment-->
+                        <!--android:id="@+id/detail_map"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent" />-->
+                <!--</LinearLayout>-->
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:weightSum="2">
 
                     <LinearLayout
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_weight="1"
-                        android:layout_height="65dp">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7">
 
-                        <ImageButton
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/icon_before_walk"
-                            android:id="@+id/icon_walk"
-                            android:adjustViewBounds="true"
-                            android:scaleType="fitXY"
                             android:layout_weight="1"
-                            android:background="@color/cardview_light_background"
-                            android:onClick="onClickIcon" />
+                            android:layout_height="65dp">
+
+                            <ImageButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/icon_before_walk"
+                                android:id="@+id/icon_walk"
+                                android:adjustViewBounds="true"
+                                android:scaleType="fitXY"
+                                android:layout_weight="1"
+                                android:background="@color/cardview_light_background"
+                                android:onClick="onClickIcon" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_height="65dp">
+
+                            <ImageButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/icon_before_bicycle"
+                                android:id="@+id/icon_bicycle"
+                                android:adjustViewBounds="true"
+                                android:scaleType="fitXY"
+                                android:layout_weight="1"
+                                android:background="@color/cardview_light_background"
+                                android:onClick="onClickIcon" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_height="65dp">
+
+                            <ImageButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/icon_before_dog"
+                                android:id="@+id/icon_dog"
+                                android:adjustViewBounds="true"
+                                android:scaleType="fitXY"
+                                android:layout_weight="1"
+                                android:background="@color/cardview_light_background"
+                                android:onClick="onClickIcon" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_weight="1"
+                            android:layout_height="65dp">
+
+                            <ImageButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/icon_before_baby"
+                                android:id="@+id/icon_baby"
+                                android:adjustViewBounds="true"
+                                android:scaleType="fitXY"
+                                android:layout_weight="1"
+                                android:background="@color/cardview_light_background"
+                                android:onClick="onClickIcon" />
+                        </LinearLayout>
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_weight="1"
-                        android:layout_height="65dp">
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.3">
 
-                        <ImageButton
+                        <TextView
+                            android:text="0"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/icon_before_bicycle"
-                            android:id="@+id/icon_bicycle"
-                            android:adjustViewBounds="true"
-                            android:scaleType="fitXY"
+                            android:id="@+id/num_walk"
                             android:layout_weight="1"
                             android:background="@color/cardview_light_background"
-                            android:onClick="onClickIcon" />
+                            android:gravity="top|center_vertical|center_horizontal" />
 
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_weight="1"
-                        android:layout_height="65dp">
-
-                        <ImageButton
+                        <TextView
+                            android:text="0"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/icon_before_dog"
-                            android:id="@+id/icon_dog"
-                            android:adjustViewBounds="true"
-                            android:scaleType="fitXY"
+                            android:id="@+id/num_bicycle"
                             android:layout_weight="1"
                             android:background="@color/cardview_light_background"
-                            android:onClick="onClickIcon" />
-                    </LinearLayout>
+                            android:gravity="top|center_vertical|center_horizontal" />
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_weight="1"
-                        android:layout_height="65dp">
-
-                        <ImageButton
+                        <TextView
+                            android:text="0"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/icon_before_baby"
-                            android:id="@+id/icon_baby"
-                            android:adjustViewBounds="true"
-                            android:scaleType="fitXY"
+                            android:id="@+id/num_pet"
                             android:layout_weight="1"
                             android:background="@color/cardview_light_background"
-                            android:onClick="onClickIcon" />
+                            android:gravity="top|center_vertical|center_horizontal" />
+
+                        <TextView
+                            android:text="0"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/num_baby"
+                            android:layout_weight="1"
+                            android:background="@color/cardview_light_background"
+                            android:gravity="top|center_vertical|center_horizontal" />
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <TextView
+                    android:text="@string/large_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detail_Info" />
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.3">
+                    android:layout_height="match_parent">
 
-                    <TextView
-                        android:text="0"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/num_walk"
-                        android:layout_weight="1"
-                        android:background="@color/cardview_light_background"
-                        android:gravity="top|center_vertical|center_horizontal" />
-
-                    <TextView
-                        android:text="0"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/num_bicycle"
-                        android:layout_weight="1"
-                        android:background="@color/cardview_light_background"
-                        android:gravity="top|center_vertical|center_horizontal" />
-
-                    <TextView
-                        android:text="0"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/num_pet"
-                        android:layout_weight="1"
-                        android:background="@color/cardview_light_background"
-                        android:gravity="top|center_vertical|center_horizontal" />
-
-                    <TextView
-                        android:text="0"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/num_baby"
-                        android:layout_weight="1"
-                        android:background="@color/cardview_light_background"
-                        android:gravity="top|center_vertical|center_horizontal" />
                 </LinearLayout>
-
             </LinearLayout>
-
-            <TextView
-                android:text="@string/large_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/detail_Info" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
+        </ScrollView>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/detail_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@android:drawable/star_big_off" />
+    </FrameLayout>
 </LinearLayout>

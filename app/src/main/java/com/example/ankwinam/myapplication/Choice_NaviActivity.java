@@ -102,7 +102,6 @@ public class Choice_NaviActivity extends AppCompatActivity
             Toast.makeText(getApplicationContext(), "찜 한 산책로",Toast.LENGTH_SHORT).show();
             Intent go_jjim = new Intent(Choice_NaviActivity.this, JJim_NaviActivity.class);
             startActivity(go_jjim);
-            finish();
         } else if (id == R.id.menu_logout) {
             SharedPreferences pref = getSharedPreferences("auto_login",MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();

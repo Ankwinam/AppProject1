@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -36,8 +37,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -71,6 +74,7 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
 
     public SharedPreferences pref;
     public SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +83,26 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
         Intent intent = getIntent();
         checked = new int[4];
 
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.detail_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "찜하기 완성", Toast.LENGTH_SHORT).show();
+                fab.setImageResource(R.drawable.cast_ic_notification_play);
+                pref = getSharedPreferences("Jjim",MODE_PRIVATE);
 
+                Set<String> values = new HashSet<String>();
+                Set<String> temp = pref.getStringSet("jjimset", new HashSet<String>());
+
+                for(String r : temp){
+                    values.add(r);
+                }
+                values.add(walk_name);
+                editor = pref.edit();
+                editor.putStringSet("jjimset",values);
+                editor.commit();
+            }
+        });
         Tracking = (Button) findViewById(R.id.detail_tracking_btn);
         Community = (Button) findViewById(R.id.detail_community_btn);
 
