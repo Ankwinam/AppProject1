@@ -1,9 +1,13 @@
 package com.example.ankwinam.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,30 +17,56 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
-public class JJim_NaviActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-    ArrayList<HashMap<String,String>> jjimList;
-    private ListView lv;
+public class JJim_NaviActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    static final String BASE_URL="https://today-walks-lee-s-h.c9users.io";
+    String myJSON;
+    private static final String TAG_RESULTS="result";
+    ArrayList<Walk_Info> h_info_list;
+
+    JSONArray peoples = null;
+
+    private SharedPreferences pref;
+    Set<String> values ;
+    private ListView list;
+    WalkListAdapter myadapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.jjim_navigation);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        pref = getSharedPreferences("Jjim",MODE_PRIVATE);
+        values = pref.getStringSet("jjimset", new HashSet<String>());
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -47,68 +77,7 @@ public class JJim_NaviActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Json 처리
-        //공공데이터 관광명소 Json 불어오기
-        jjimList = new ArrayList<>();
-        lv = (ListView)findViewById(R.id.listView_jjim);
-        String data = loadJSONFromAsset("json/data.json");
-        //Json 정보 저장장
-        try {
-            JSONObject d = new JSONObject(data);
-            JSONArray famous = d.getJSONArray("DATA");
-
-
-
-            for(int i=0; i<famous.length(); i++){
-                JSONObject c = famous.getJSONObject(i);
-
-                String name = c.getString("FAC_NAME");
-                String etc = c.getString("ETC_DESC");
-                String phone = c.getString("PHNE");
-                String img = c.getString("MAIN_IMG");
-                String homepage = c.getString("HOMEPAGE");
-                String adress = c.getString("ADDR");
-
-                HashMap<String, String> famous_data = new HashMap<>();
-                famous_data.put("name",name);
-                famous_data.put("etc",etc);
-                famous_data.put("phone",phone);
-                famous_data.put("img",img);
-                famous_data.put("homepage",homepage);
-                famous_data.put("adress",adress);
-
-                jjimList.add(famous_data);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        ListAdapter adapter = new SimpleAdapter(
-                JJim_NaviActivity.this, jjimList,
-                R.layout.jjim_info, new String[]{"name","adress","phone"},
-                new int[]{R.id.name_jjim, R.id.email_jjim, R.id.mobile_jjim}
-        );
-        lv.setAdapter(adapter);
-    }
-
-
-    //Json파일 불러오는 Method
-    public String loadJSONFromAsset(String url) {
-        String json = null;
-        try {
-            InputStream is = getAssets().open(url);
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
-
+        getData(BASE_URL+"/jjim_list.php");
     }
 
     @Override
@@ -120,28 +89,6 @@ public class JJim_NaviActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-    //오른쪽 옵션 메뉴
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.navigation, menu);
-//        return true;
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -149,6 +96,7 @@ public class JJim_NaviActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        // Handle the camera action
         if (id == R.id.menu_home) {
             Toast.makeText(getApplicationContext(), "홈", Toast.LENGTH_SHORT).show();
             Intent go_home = new Intent(JJim_NaviActivity.this, Choice_NaviActivity.class);
@@ -166,6 +114,8 @@ public class JJim_NaviActivity extends AppCompatActivity
             finish();
         } else if (id == R.id.menu_history) {
             Toast.makeText(getApplicationContext(), "내가 쓴 글", Toast.LENGTH_SHORT).show();
+            Intent go_his = new Intent(JJim_NaviActivity.this, CommunityHistoryActivity.class);
+            startActivity(go_his);
         } else if (id == R.id.menu_stamp) {
             Toast.makeText(getApplicationContext(), "스탬프", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.menu_jjim) {
@@ -174,13 +124,124 @@ public class JJim_NaviActivity extends AppCompatActivity
             startActivity(go_jjim);
             finish();
         } else if (id == R.id.menu_logout) {
+            SharedPreferences pref = getSharedPreferences("auto_login",MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.clear();
+            editor.putString("auto","false");
+            editor.commit();
+
             Intent go_main = new Intent(JJim_NaviActivity.this, MainActivity.class);
             startActivity(go_main);
             finish();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    //리스트 뷰
+    protected void showList(){
+        try {
+            list = (ListView) findViewById(R.id.listView_jjim);
+            JSONObject jsonObj = new JSONObject(myJSON);
+            peoples = jsonObj.getJSONArray(TAG_RESULTS);
+            h_info_list = new ArrayList<Walk_Info>();
+
+            for(int i=0;i<peoples.length();i++){
+                JSONObject c = peoples.getJSONObject(i);
+                for(String walks : values){
+                    String id = c.getString("walk_name");
+                    Log.e("id",id);
+                    Log.e("walks",walks);
+                    if(id.equals(walks)) {
+                        Log.e("Check123","들어옴");
+                        String name = "자치구" + c.getString("area");
+                        String address = c.getString("level") + "";
+                        String walk = c.getString("walk");
+                        String bicycle = c.getString("bicycle");
+                        String pet = c.getString("pet");
+                        String baby = c.getString("baby");
+                        String image_url = URLEncoder.encode(id, "UTF-8");
+                        image_url = image_url.replace("+", "%20");
+                        String imgUrl = BASE_URL + "/walks/" + image_url + ".jpg";
+
+                        Walk_Info data = new Walk_Info(id, name, address, imgUrl, walk, bicycle, pet, baby);
+                        h_info_list.add(data);
+                        break;
+                    }
+                }
+            }
+            myadapter = new WalkListAdapter(getApplicationContext(),R.layout.tema_info, h_info_list);
+            list.setAdapter(myadapter);
+
+
+            for(Walk_Info each : h_info_list){
+                each.loadImage(myadapter);
+            }
+
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                    Intent intent = new Intent(getApplicationContext(), DetailActivity.class); // 다음넘어갈 화면
+                    Walk_Info data = h_info_list.get(position);
+                    intent.putExtra("walk_name",data.walk_name);
+                    intent.putExtra("walk_level",data.level);
+                    intent.putExtra("walk_area",data.area);
+                    intent.putExtra("walk",data.walk);
+                    intent.putExtra("bicycle",data.bicycle);
+                    intent.putExtra("baby",data.baby);
+                    intent.putExtra("pet",data.pet);
+
+                    Bitmap sendBitmap = data.image;
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] byteArray = stream.toByteArray();
+
+                    intent.putExtra("walk_image",byteArray);
+
+                    startActivity(intent);
+                }
+            });
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getData(String url){
+        class GetDataJSON extends AsyncTask<String, Void, String> {
+            @Override
+            protected String doInBackground(String... params) {
+                String uri = params[0];
+                BufferedReader bufferedReader = null;
+                try {
+                    URL url = new URL(uri);
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    StringBuilder sb = new StringBuilder();
+
+                    bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+                    String json;
+                    while((json = bufferedReader.readLine())!= null){
+                        sb.append(json+"\n");
+                    }
+
+                    return sb.toString().trim();
+
+                }catch(Exception e){
+                    return null;
+                }
+            }
+            @Override
+            protected void onPostExecute(String result){
+                myJSON=result;
+                showList();
+            }
+        }
+        GetDataJSON g = new GetDataJSON();
+        g.execute(url);
     }
 }

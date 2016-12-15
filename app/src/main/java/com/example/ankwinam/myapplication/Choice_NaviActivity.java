@@ -94,13 +94,14 @@ public class Choice_NaviActivity extends AppCompatActivity
             finish();
         } else if (id == R.id.menu_history) {
             Toast.makeText(getApplicationContext(), "내가 쓴 글", Toast.LENGTH_SHORT).show();
+            Intent go_his = new Intent(Choice_NaviActivity.this, CommunityHistoryActivity.class);
+            startActivity(go_his);
         } else if (id == R.id.menu_stamp) {
             Toast.makeText(getApplicationContext(), "스탬프", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.menu_jjim) {
             Toast.makeText(getApplicationContext(), "찜 한 산책로",Toast.LENGTH_SHORT).show();
             Intent go_jjim = new Intent(Choice_NaviActivity.this, JJim_NaviActivity.class);
             startActivity(go_jjim);
-            finish();
         } else if (id == R.id.menu_logout) {
             SharedPreferences pref = getSharedPreferences("auto_login",MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();

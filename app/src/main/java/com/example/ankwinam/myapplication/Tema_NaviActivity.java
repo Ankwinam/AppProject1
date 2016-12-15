@@ -1,6 +1,7 @@
 package com.example.ankwinam.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -148,6 +149,8 @@ public class Tema_NaviActivity extends AppCompatActivity implements NavigationVi
             finish();
         } else if (id == R.id.menu_history) {
             Toast.makeText(getApplicationContext(), "내가 쓴 글", Toast.LENGTH_SHORT).show();
+            Intent go_his = new Intent(Tema_NaviActivity.this, CommunityHistoryActivity.class);
+            startActivity(go_his);
         } else if (id == R.id.menu_stamp) {
             Toast.makeText(getApplicationContext(), "스탬프", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.menu_jjim) {
@@ -156,6 +159,11 @@ public class Tema_NaviActivity extends AppCompatActivity implements NavigationVi
             startActivity(go_jjim);
             finish();
         } else if (id == R.id.menu_logout) {
+            SharedPreferences pref = getSharedPreferences("auto_login",MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.clear();
+            editor.putString("auto","false");
+            editor.commit();
 
             Intent go_main = new Intent(Tema_NaviActivity.this, MainActivity.class);
             startActivity(go_main);

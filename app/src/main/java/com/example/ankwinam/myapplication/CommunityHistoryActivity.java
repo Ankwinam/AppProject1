@@ -1,6 +1,7 @@
 package com.example.ankwinam.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,10 +24,10 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
- * Created by axx42 on 2016-11-27.
+ * Created by axx42 on 2016-12-12.
  */
 
-public class CommunityActivity extends AppCompatActivity {
+public class CommunityHistoryActivity extends AppCompatActivity {
     String myJSON;
     static final String BASE_URL="https://today-walks-lee-s-h.c9users.io";
     private static final String TAG_RESULTS="result";
@@ -34,37 +35,27 @@ public class CommunityActivity extends AppCompatActivity {
     ArrayList<Community_item> info_list;
     RecyclerView recyclerView;
     String walk_name;
+    private SharedPreferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.community_main);
+        setContentView(R.layout.community_history);
 
-        recyclerView=(RecyclerView)findViewById(R.id.recyclerview);
+        recyclerView=(RecyclerView)findViewById(R.id.history_recyclerview);
         LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
-        Intent i = getIntent();
-        walk_name = i.getStringExtra("walk_name");
-        //글쓰기 버튼 이벤트
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                Intent write = new Intent(CommunityActivity.this, CommunityWriteActivity.class);
-                write.putExtra("walk_name",walk_name);
-                startActivity(write);
-            }
-        });
+        pref = getSharedPreferences("auto_login",MODE_PRIVATE);
+        String id = pref.getString("email","");
 
-        String walk_parm = "";
+        String id_parm = "";
         try {
-            walk_parm = java.net.URLEncoder.encode(new String(walk_name.getBytes("UTF-8")));
+            id_parm = java.net.URLEncoder.encode(new String(id.getBytes("UTF-8")));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        getData(BASE_URL+"/board.php?walk=" + walk_parm);
+        getData(BASE_URL+"/board_history.php?id=" + id_parm);
     }
 
 
@@ -86,10 +77,6 @@ public class CommunityActivity extends AppCompatActivity {
                 String content = c.getString("contents");
                 String date = c.getString("created_at");
                 String email = c.getString("id");
-
-//                Log.e("Check1",id);
-//                Log.e("Check2",url);
-//                Log.e("Check3",image_url);
 
                 Community_item data = new Community_item(image_url, id,walk_name,content,date,email);
 
