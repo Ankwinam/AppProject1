@@ -4,18 +4,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/map_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/mapdistance"
-        android:textSize="16sp"
-        android:textStyle="normal|bold"
-        android:textColor="@android:color/black"
-        android:layout_weight="1" />
+        <RelativeLayout
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/mapdistance"
+            android:textSize="16sp"
+            android:textStyle="normal|bold"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_weight="1"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@android:color/white" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:fabSize="mini"
+            android:id="@+id/current_btn"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@android:drawable/ic_menu_mylocation"
+            app:backgroundTint="?android:attr/statusBarColor" />
+
+    </FrameLayout>
 
 </RelativeLayout>
