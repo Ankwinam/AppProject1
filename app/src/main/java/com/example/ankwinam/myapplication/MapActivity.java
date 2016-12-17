@@ -45,6 +45,10 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
 
     private Location[] location;
 
+    private double[] distance;
+    private double[] time;
+    private double[] time_s;
+
     private static final MapPoint DEFAULT_MARKER_POINT = MapPoint.mapPointWithGeoCoord(37.473206, 127.035333);
 
 //    private double[] yangjae_X = {127.035333,127.034134,127.032526,127.031072,127.029540,127.028775,127.028740,127.029263,127.029926,127.030411,127.031872
@@ -171,73 +175,6 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                 MapPointBounds mapPointBounds = new MapPointBounds(polyline.getMapPoints());
                 int padding = 100; // px
                 mapView.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding));
-
-                //좌표 사이의 거리 재기
-                double distance=0.0;
-                String meter;
-
-//                //좌표를 계산하기 위한 객체 생성
-//                location = new Location[31];
-//                for(int i =0;i<location.length;i++) {
-//                    location[i] = new Location("point "+i);location[i].setLongitude(yangjae_Y[i]);location[i].setLatitude(yangjae_X[i]);
-//                }
-//                for(int i =0;i<location.length-1;i++) {
-//                    distance += (int) location[i].distanceTo(location[i+1]);
-//                }
-//                distance += (int) location[29].distanceTo(location[0]);
-
-                //좌표를 계산하기 위한 객체 생성
-                Location locationA = new Location("point A");locationA.setLongitude(37.473206);locationA.setLatitude(127.035333);
-                Location locationB = new Location("point B");locationB.setLongitude(37.472943);locationB.setLatitude(127.034134);
-                Location locationC = new Location("point C");locationC.setLongitude(37.471748);locationC.setLatitude(127.032526);
-                Location locationD = new Location("point D");locationD.setLongitude(37.472943);locationD.setLatitude(127.031072);
-                Location locationE = new Location("point E");locationE.setLongitude(37.467718);locationE.setLatitude(127.029540);
-                Location locationF = new Location("point F");locationF.setLongitude(37.467596);locationF.setLatitude(127.028775);
-                Location locationG = new Location("point G");locationG.setLongitude(37.467955);locationG.setLatitude(127.028740);
-                Location locationH = new Location("point H");locationH.setLongitude(37.468674);locationH.setLatitude(127.029263);
-                Location locationI = new Location("point I");locationI.setLongitude(37.469413);locationI.setLatitude(127.029926);
-                Location locationJ = new Location("point J");locationJ.setLongitude(37.470162);locationJ.setLatitude(127.030411);
-                Location locationK = new Location("point K");locationK.setLongitude(37.471631);locationK.setLatitude(127.031872);
-                Location locationL = new Location("point L");locationL.setLongitude(37.472167);locationL.setLatitude(127.032459);
-                Location locationM = new Location("point M");locationM.setLongitude(37.472390);locationM.setLatitude(127.032554);
-                Location locationN = new Location("point N");locationN.setLongitude(37.472790);locationN.setLatitude(127.033090);
-                Location locationO = new Location("point O");locationO.setLongitude(37.473200);locationO.setLatitude(127.033798);
-                Location locationP = new Location("point P");locationP.setLongitude(37.473529);locationP.setLatitude(127.034915);
-                Location locationQ = new Location("point Q");locationQ.setLongitude(37.473833);locationQ.setLatitude(127.036382);
-                Location locationR = new Location("point R");locationR.setLongitude(37.474714);locationR.setLatitude(127.037518);
-                Location locationS = new Location("point S");locationS.setLongitude(37.474729);locationS.setLatitude(127.038034);
-                Location locationT = new Location("point T");locationT.setLongitude(37.475225);locationT.setLatitude(127.039502);
-                Location locationU = new Location("point U");locationU.setLongitude(37.479573);locationU.setLatitude(127.043519);
-                Location locationV = new Location("point V");locationV.setLongitude(37.479353);locationV.setLatitude(127.043938);
-                Location locationW = new Location("point W");locationW.setLongitude(37.475176);locationW.setLatitude(127.040449);
-                Location locationX = new Location("point X");locationX.setLongitude(37.474715);locationX.setLatitude(127.040008);
-                Location locationY = new Location("point Y");locationY.setLongitude(37.474052);locationY.setLatitude(127.038835);
-                Location locationZ = new Location("point Z");locationZ.setLongitude(37.473880);locationZ.setLatitude(127.038235);
-                Location locationAA = new Location("point AA");locationAA.setLongitude(37.473353);locationAA.setLatitude(127.037878);
-                Location locationBB = new Location("point BB");locationBB.setLongitude(37.473277);locationBB.setLatitude(127.037718);
-                Location locationCC = new Location("point CC");locationCC.setLongitude(37.473434);locationCC.setLatitude(127.036541);
-                Location locationDD = new Location("point DD");locationDD.setLongitude(37.473206);locationDD.setLatitude(127.035333);
-                //좌표 객체 더함
-                distance += (int) locationA.distanceTo(locationB);distance += (int) locationB.distanceTo(locationC);
-                distance += (int) locationC.distanceTo(locationD);distance += (int) locationD.distanceTo(locationE);
-                distance += (int) locationE.distanceTo(locationF);distance += (int) locationF.distanceTo(locationG);
-                distance += (int) locationG.distanceTo(locationH);distance += (int) locationH.distanceTo(locationI);
-                distance += (int) locationI.distanceTo(locationJ);distance += (int) locationJ.distanceTo(locationK);
-                distance += (int) locationK.distanceTo(locationL);distance += (int) locationL.distanceTo(locationM);
-                distance += (int) locationM.distanceTo(locationN);distance += (int) locationN.distanceTo(locationO);
-                distance += (int) locationO.distanceTo(locationP);distance += (int) locationP.distanceTo(locationQ);
-                distance += (int) locationQ.distanceTo(locationR);distance += (int) locationR.distanceTo(locationS);
-                distance += (int) locationS.distanceTo(locationT);distance += (int) locationT.distanceTo(locationU);
-                distance += (int) locationU.distanceTo(locationV);distance += (int) locationV.distanceTo(locationW);
-                distance += (int) locationW.distanceTo(locationX);distance += (int) locationY.distanceTo(locationY);
-                distance += (int) locationY.distanceTo(locationZ);distance += (int) locationZ.distanceTo(locationAA);
-                distance += (int) locationAA.distanceTo(locationBB);distance += (int) locationBB.distanceTo(locationCC);
-                distance += (int) locationCC.distanceTo(locationDD);distance += (int) locationDD.distanceTo(locationA);
-                //더한 총거리 표시
-                meter = Double.toString(distance);
-                TextView distanceoutput = (TextView)findViewById(R.id.mapdistance);
-                distanceoutput.setText("총 거리 : "+meter+ " m");
-
             }
 
             @Override
@@ -258,9 +195,126 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
     @Override
     public void onPOIItemSelected(MapView mapView, MapPOIItem mapPOIItem) {
         Log.e("IN", String.valueOf(mapPOIItem.getTag()));
-        Log.e("selected : ",mPOIPoints[mapPOIItem.getTag()].getItemName());
+        //Log.e("selected : ",mPOIPoints[mapPOIItem.getTag()].getItemName());
         mPOIPoints[mapPOIItem.getTag()].setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
 
+        //좌표 사이의 거리 재기
+        distance = new double[10];
+        time = new double[10];
+        time_s = new double[10];
+        double distancesum = 0.0;
+        double timesum = 0.0;
+        double timesum_s = 0.0;
+        String meter;
+
+//                //좌표를 계산하기 위한 객체 생성
+//                location = new Location[31];
+//                for(int i =0;i<location.length;i++) {
+//                    location[i] = new Location("point "+i);location[i].setLongitude(yangjae_Y[i]);location[i].setLatitude(yangjae_X[i]);
+//                }
+//                for(int i =0;i<location.length-1;i++) {
+//                    distance += (int) location[i].distanceTo(location[i+1]);
+//                }
+//                distance += (int) location[29].distanceTo(location[0]);
+
+        //좌표를 계산하기 위한 객체 생성
+        Location locationA = new Location("point A");locationA.setLongitude(37.473206);locationA.setLatitude(127.035333);//핀마커
+        Location locationB = new Location("point B");locationB.setLongitude(37.472943);locationB.setLatitude(127.034134);
+        Location locationC = new Location("point C");locationC.setLongitude(37.471748);locationC.setLatitude(127.032526);//핀마커
+        Location locationD = new Location("point D");locationD.setLongitude(37.472943);locationD.setLatitude(127.031072);
+        Location locationE = new Location("point E");locationE.setLongitude(37.467718);locationE.setLatitude(127.029540);
+        Location locationF = new Location("point F");locationF.setLongitude(37.467596);locationF.setLatitude(127.028775);
+        Location locationG = new Location("point G");locationG.setLongitude(37.467955);locationG.setLatitude(127.028740);//핀마커
+        Location locationH = new Location("point H");locationH.setLongitude(37.468674);locationH.setLatitude(127.029263);
+        Location locationI = new Location("point I");locationI.setLongitude(37.469413);locationI.setLatitude(127.029926);
+        Location locationJ = new Location("point J");locationJ.setLongitude(37.470162);locationJ.setLatitude(127.030411);//핀마커
+        Location locationK = new Location("point K");locationK.setLongitude(37.471631);locationK.setLatitude(127.031872);
+        Location locationL = new Location("point L");locationL.setLongitude(37.472167);locationL.setLatitude(127.032459);
+        Location locationM = new Location("point M");locationM.setLongitude(37.472390);locationM.setLatitude(127.032554);
+        Location locationN = new Location("point N");locationN.setLongitude(37.472790);locationN.setLatitude(127.033090);//핀마커
+        Location locationO = new Location("point O");locationO.setLongitude(37.473200);locationO.setLatitude(127.033798);
+        Location locationP = new Location("point P");locationP.setLongitude(37.473529);locationP.setLatitude(127.034915);
+        Location locationQ = new Location("point Q");locationQ.setLongitude(37.473833);locationQ.setLatitude(127.036382);//핀마커
+        Location locationR = new Location("point R");locationR.setLongitude(37.474714);locationR.setLatitude(127.037518);
+        Location locationS = new Location("point S");locationS.setLongitude(37.474729);locationS.setLatitude(127.038034);
+        Location locationT = new Location("point T");locationT.setLongitude(37.475225);locationT.setLatitude(127.039502);//핀마커
+        Location locationU = new Location("point U");locationU.setLongitude(37.479573);locationU.setLatitude(127.043519);
+        Location locationV = new Location("point V");locationV.setLongitude(37.479353);locationV.setLatitude(127.043938);//핀마커
+        Location locationW = new Location("point W");locationW.setLongitude(37.475176);locationW.setLatitude(127.040449);//핀마커
+        Location locationX = new Location("point X");locationX.setLongitude(37.474715);locationX.setLatitude(127.040008);
+        Location locationY = new Location("point Y");locationY.setLongitude(37.474052);locationY.setLatitude(127.038835);
+        Location locationZ = new Location("point Z");locationZ.setLongitude(37.473880);locationZ.setLatitude(127.038235);//핀마커
+        Location locationAA = new Location("point AA");locationAA.setLongitude(37.473353);locationAA.setLatitude(127.037878);
+        Location locationBB = new Location("point BB");locationBB.setLongitude(37.473277);locationBB.setLatitude(127.037718);
+        Location locationCC = new Location("point CC");locationCC.setLongitude(37.473434);locationCC.setLatitude(127.036541);
+        Location locationDD = new Location("point DD");locationDD.setLongitude(37.473206);locationDD.setLatitude(127.035333);
+        //좌표 객체 더함
+        distance[0] += (int) locationA.distanceTo(locationB);distance[0] += (int) locationB.distanceTo(locationC);//1
+        distance[1] += (int) locationC.distanceTo(locationD);distance[1] += (int) locationD.distanceTo(locationE);
+        distance[1] += (int) locationE.distanceTo(locationF);distance[1] += (int) locationF.distanceTo(locationG);//2
+        distance[2] += (int) locationG.distanceTo(locationH);distance[2] += (int) locationH.distanceTo(locationI);
+        distance[2] += (int) locationI.distanceTo(locationJ);                                                       //3
+        distance[3] += (int) locationJ.distanceTo(locationK);distance[3] += (int) locationK.distanceTo(locationL);
+        distance[3] += (int) locationL.distanceTo(locationM);distance[3] += (int) locationM.distanceTo(locationN);//4
+        distance[4] += (int) locationN.distanceTo(locationO);distance[4] += (int) locationO.distanceTo(locationP);
+        distance[4] += (int) locationP.distanceTo(locationQ);                                                       //5
+        distance[5] += (int) locationQ.distanceTo(locationR);distance[5] += (int) locationR.distanceTo(locationS);
+        distance[5] += (int) locationS.distanceTo(locationT);                                                       //6
+        distance[6] += (int) locationT.distanceTo(locationU);distance[6] += (int) locationU.distanceTo(locationV);//7
+        distance[7] += (int) locationV.distanceTo(locationW);                                                       //8
+        distance[8] += (int) locationW.distanceTo(locationX);distance[8] += (int) locationY.distanceTo(locationY);
+        distance[8] += (int) locationY.distanceTo(locationZ);                                                       //9
+        distance[9] += (int) locationZ.distanceTo(locationAA);distance[9] += (int) locationAA.distanceTo(locationBB);
+        distance[9] += (int) locationBB.distanceTo(locationCC);distance[9] += (int) locationCC.distanceTo(locationDD);
+        distance[9] += (int) locationDD.distanceTo(locationA);//10
+        //남은 시간 구하기
+        for(int i=0; i<10; i++){
+            time[i] = (distance[i] / 4000) * 60;
+            time_s[i] = (time[i] - (int)time[i]) * 60;
+            timesum += time[i];
+        }
+        timesum_s = (timesum - (int)timesum) * 60;
+        //더한 총거리 표시
+        for(int i=0; i<10; i++){
+            distancesum += distance[i];
+        }
+        meter = Double.toString(distancesum);
+        TextView distanceoutput = (TextView)findViewById(R.id.mapdistance);
+        distanceoutput.setText("총 거리 : "+meter+ " m"
+                + "\n총 예상 시간 : " + (int)timesum + "분 " + (int)timesum_s + "초"
+                + "\n남은 거리 : " +distance[mapPOIItem.getTag()]+ " m"
+                + "\n남은 예상 시간 : " + (int)time[mapPOIItem.getTag()] + "분 " + (int)time_s[mapPOIItem.getTag()] + "초");
+//        if(mPOIPoints[mapPOIItem.getTag()].getItemName().equals("양재천 1")){
+//            distanceoutput.setText("총 거리 : "+meter+ " m"
+//                                + "\n총 예상 시간 : " + (int)timesum + "분 " + (int)timesum_s + "초"
+//                                + "\n남은 거리 : " +distance[0]+ " m"
+//                                + "\n남은 예상 시간 : " + (int)time[0] + "분 " + (int)time_s[0] + "초");
+//        }
+//        else if(mPOIPoints[mapPOIItem.getTag()].getItemName().equals("양재천 2")){
+//            mPOIPoints[mapPOIItem.getTag()].setMarkerType(MapPOIItem.MarkerType.RedPin);
+//        }
+//        else if(mPOIPoints[mapPOIItem.getTag()].getItemName().equals("양재천 3")){
+//
+//        }
+//        else if(mPOIPoints[mapPOIItem.getTag()].getItemName().equals("양재천 4")){
+//
+//        }
+//        else if(mPOIPoints[mapPOIItem.getTag()].getItemName().equals("양재천 5")){
+//
+//        }
+//        else if(mPOIPoints[mapPOIItem.getTag()].getItemName().equals("양재천 6")){
+//
+//        }
+//        else if(mPOIPoints[mapPOIItem.getTag()].getItemName().equals("양재천 7")){
+//
+//        }
+//        else if(mPOIPoints[mapPOIItem.getTag()].getItemName().equals("양재천 8")){
+//
+//        }
+//        else if(mPOIPoints[mapPOIItem.getTag()].getItemName().equals("양재천 9")){
+//
+//        }
+        //distanceoutput.setText("총 거리 : "+meter+ " m" + "\n" +"예상 소요 시간 : " + (int)timesum + "분 " + (int)timesum_s + "초");
     }
 
     @Override
