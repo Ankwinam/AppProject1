@@ -20,10 +20,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".MapActivity" />
+        <activity
+            android:name=".SignupActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".MapActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".Tema_NaviActivity"
             android:label="테마별 산책로"
@@ -32,7 +38,9 @@
             android:name=".Local_NaviActivity"
             android:label="지역별 산책로"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CommunityWriteActivity" />
+        <activity
+            android:name=".CommunityWriteActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".TemaResultActivity"
             android:label="자세히"
@@ -43,25 +51,25 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".JJim_NaviActivity"
-            android:label="찜한산책로"
+            android:label="찜 목록"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DetailActivity"
-            android:label=".DetailActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:label="상세정보"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".CommunityActivity"
-            android:label=".CommunityActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:label="커뮤니티"
+            android:theme="@style/AppTheme"/>
         <activity android:name=".CommentActivity"
-            android:label=".CommentActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:label="댓글목록"
+            android:theme="@style/AppTheme"/>
         <activity android:name=".CommentWriteActivity"
-            android:label=".CommentWriteActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:label="댓글작성"
+            android:theme="@style/AppTheme"/>
         <activity android:name=".CommunityHistoryActivity"
-            android:label=".CommunityHistoryActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:label="내가 쓴 글"
+            android:theme="@style/AppTheme"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
