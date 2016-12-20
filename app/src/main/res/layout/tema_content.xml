@@ -8,7 +8,7 @@
     tools:context=".Tema_NaviActivity"
     tools:showIn="@layout/tema_app_bar"
     android:orientation="vertical"
-    android:background="#333232"
+    android:background="#01804b"
     android:weightSum="1">
 
     <LinearLayout
