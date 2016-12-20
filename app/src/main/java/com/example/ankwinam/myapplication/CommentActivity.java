@@ -105,33 +105,19 @@ public class CommentActivity extends AppCompatActivity {
             for(int i=0;i<comments.length();i++){
                 JSONObject c = comments.getJSONObject(i);
                 String id = c.getString("email");
-                String date = c.getString("date");
+                String comment_date = c.getString("date");
                 String contents = c.getString("content");
-                Comment_item data = new Comment_item(date, id, contents);
-                h_info_list.add(data);
+                String get_board_date = c.getString("board_date");
+                Comment_item data = new Comment_item(comment_date, id, contents);
+                Log.e("날짜",date);
+                Log.e("받아온 날짜",get_board_date);
+                if(get_board_date.equals(date)) {
+                    h_info_list.add(data);
+                }
             }
 
             list.setAdapter(new CommentAdapter(getApplicationContext(),R.layout.comment_info,h_info_list));
 
-//            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    Intent intent = new Intent(getApplicationContext(), DetailActivity.class); // 다음넘어갈 화면
-//                    Comment_item data = h_info_list.get(position);
-//                    intent.putExtra("walk_name",data.walk_name);
-//                    intent.putExtra("walk_level",data.level);
-//                    intent.putExtra("walk_area",data.area);
-//
-//                    Bitmap sendBitmap = data.image;
-//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                    sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//                    byte[] byteArray = stream.toByteArray();
-//
-//                    intent.putExtra("walk_image",byteArray);
-//
-//                    startActivity(intent);
-//                }
-//            });
         } catch (JSONException e) {
             e.printStackTrace();
         }

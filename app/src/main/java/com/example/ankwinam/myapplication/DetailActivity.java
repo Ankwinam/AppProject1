@@ -74,7 +74,7 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
 
     public SharedPreferences pref;
     public SharedPreferences.Editor editor;
-
+    private int jjimOk = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,23 +84,44 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
         checked = new int[4];
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.detail_fab);
+
+        pref = getSharedPreferences("Jjim",MODE_PRIVATE);
+
+        Set<String> values = new HashSet<String>();
+        Set<String> temp = pref.getStringSet("jjimset", new HashSet<String>());
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "찜하기 완성", Toast.LENGTH_SHORT).show();
-                fab.setImageResource(R.drawable.cast_ic_notification_play);
-                pref = getSharedPreferences("Jjim",MODE_PRIVATE);
-
+                pref = getSharedPreferences("Jjim", MODE_PRIVATE);
                 Set<String> values = new HashSet<String>();
                 Set<String> temp = pref.getStringSet("jjimset", new HashSet<String>());
-
-                for(String r : temp){
-                    values.add(r);
-                }
-                values.add(walk_name);
                 editor = pref.edit();
-                editor.putStringSet("jjimset",values);
-                editor.commit();
+                if(jjimOk == 0) {
+                    Toast.makeText(getApplicationContext(), "찜하기 완성", Toast.LENGTH_SHORT).show();
+                    fab.setImageResource(R.drawable.cast_ic_notification_play);
+                    for (String r : temp) {
+                        values.add(r);
+                    }
+                    values.add(walk_name);
+                    editor.putStringSet("jjimset", values);
+                    editor.commit();
+                    jjimOk = 1;
+                    values.clear();
+                }else {
+                    for (String r : temp) {
+                        if(r.equals(walk_name)){
+                        }else {
+                            values.add(r);
+                        }
+                    }
+                    editor.putStringSet("jjimset", values);
+                    editor.commit();
+                    jjimOk = 0;
+                    Toast.makeText(getApplicationContext(), "찜제거 완성", Toast.LENGTH_SHORT).show();
+                    fab.setImageResource(R.drawable.cast_ic_notification_on);
+                    values.clear();
+                }
             }
         });
         Tracking = (Button) findViewById(R.id.detail_tracking_btn);
@@ -134,6 +155,13 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
         walk_name = intent.getStringExtra("walk_name");
         String walk_level = intent.getStringExtra("walk_level");
         String walk_area = intent.getStringExtra("walk_area");
+
+        for(String r : temp){
+            if(r.equals(walk_name)){
+                fab.setImageResource(R.drawable.cast_ic_notification_play);
+                jjimOk = 1;
+            }
+        }
 
         //----------------------------------------------------- 추천수 기능 --------------------------------
         Icon_walk = (ImageButton) findViewById(R.id.icon_walk);

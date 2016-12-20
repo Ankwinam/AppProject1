@@ -185,7 +185,8 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         }
         else if(controlcount == 10 && mPOIPoints[mapPOIItem.getTag()].getItemName().equals("양재천 "+1)){
             for (int i = 0; i < yangjae_X.length; i++) {
-                polyline2.addPoint(MapPoint.mapPointWithGeoCoord(yangjae_Y[i], yangjae_X[i])); }
+                polyline2.addPoint(MapPoint.mapPointWithGeoCoord(yangjae_Y[i], yangjae_X[i]));
+            }
             controlcount++;
         }
         for(int i = 0; i<9; i++){
