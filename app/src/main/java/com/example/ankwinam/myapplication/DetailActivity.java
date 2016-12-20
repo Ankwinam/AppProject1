@@ -57,7 +57,7 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
     //public static String API_KEY = "563f51225e2f3bd14cd9287c3e7b067";
 
     TextView main_name;
-    TextView level;
+    ImageView level;
     ImageView imageView;
     TextView area;
     TextView info;
@@ -153,7 +153,7 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
 
         main_name = (TextView) findViewById(R.id.detail_name);
         area = (TextView) findViewById(R.id.detail_area);
-        level = (TextView) findViewById(R.id.detail_level);
+        level = (ImageView) findViewById(R.id.detail_level);
         info = (TextView) findViewById(R.id.detail_Info);
         imageView = (ImageView) findViewById(R.id.detail_imageView);
 
@@ -216,7 +216,18 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
         main_name.setText(walk_name);
         imageView.setImageBitmap(resized);
         area.setText(walk_area);
-        level.setText("난이도 " + walk_level);
+        switch (walk_level){
+            case "1" :
+                level.setImageResource();
+                break;
+            case "2" :
+                level.setImageResource();
+                break;
+            case "3" :
+                level.setImageResource();
+                break;
+        }
+
 
 
         JSONObject jsonObject;
@@ -240,7 +251,14 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
                     course = "<코스>\n" + c.getString("DETAIL_COURSE");
                     traffic_info = "<진입로 정보>\n" + c.getString("TRAFFIC_INFO");
                     time = "<예상소요시간>\n" + c.getString("LEAD_TIME");
-                    point_content += "[" + Integer.toString(point) + " 포인트]\n" + c.getString("CPI_CONTENT") + "\n\n";
+                    point_content += "[" + Integer.toString(point) + " 포인트]\n";
+
+                    if (c.getString("CPI_CONTENT").equals("null")){
+                        point_content += "정보가 없습니다." + "\n\n";
+                    }else {
+                        point_content += c.getString("CPI_CONTENT") + "\n\n";
+                    }
+
                     mapX = c.getDouble("X");
                     mapY = c.getDouble("Y");
                 }else if (q==1) {
@@ -248,17 +266,6 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
                     break;
                 }
             }
-
-            // 텍스트 뷰 가꼬와서
-// 사용 할 String 으로 스패너블 스트링 빌더를 만들어서
-            final SpannableStringBuilder sp = new SpannableStringBuilder(traffic_info);
-// ForegroundColorSpan(색상, 바꿀 시작 위치, 끝 위치, flag) 으로 색상 설정해주고
-            sp.setSpan(new ForegroundColorSpan(Color.RED), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            //sp.setSpan(new AbsoluteSizeSpan(30), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            //sp.setSpan(new ForegroundColorSpan(Color.rgb(81, 172, 169)), 61, 68, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-// 텍스트 뷰에 갖다붙이면 된다.
-            info.append(sp);
-
             info.setText(course + "\n\n" + traffic_info + "\n\n" + time + "\n\n<포인트별 상세정보>\n" + point_content + "\n");
         } catch (JSONException e) {
             e.printStackTrace();
