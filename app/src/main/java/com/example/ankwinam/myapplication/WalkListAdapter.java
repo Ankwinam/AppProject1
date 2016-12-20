@@ -58,6 +58,10 @@ public class WalkListAdapter extends BaseAdapter {
         TextView Hu_name = (TextView) convertView.findViewById(R.id.Walk_name);
         TextView Hu_gender = (TextView) convertView.findViewById(R.id.Walk_gu);
         TextView Hu_age = (TextView) convertView.findViewById(R.id.Walk_level);
+        TextView num_walk = (TextView) convertView.findViewById(R.id.little_walk_text);
+        TextView num_by = (TextView) convertView.findViewById(R.id.little_bicycle_text);
+        TextView num_pet = (TextView) convertView.findViewById(R.id.little_dog_text);
+        TextView num_baby = (TextView) convertView.findViewById(R.id.little_baby_text);
 
         if(data.get(position).getImage() != null){
             Hu_image.setImageBitmap(data.get(position).image);
@@ -67,6 +71,10 @@ public class WalkListAdapter extends BaseAdapter {
         Hu_name.setText(data.get(position).walk_name);
         Hu_gender.setText(data.get(position).area);
         Hu_age.setText("코스레벨 "+ data.get(position).level);
+        num_baby.setText(data.get(position).baby);
+        num_by.setText(data.get(position).bicycle);
+        num_pet.setText(data.get(position).pet);
+        num_walk.setText(data.get(position).walk);
 
         return convertView;
     }

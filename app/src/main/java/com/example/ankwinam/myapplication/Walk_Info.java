@@ -107,7 +107,7 @@ public class Walk_Info {
             connection.connect();
             InputStream input = connection.getInputStream();
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            Bitmap resized = Bitmap.createScaledBitmap(myBitmap,300,300,true);
+            Bitmap resized = Bitmap.createScaledBitmap(myBitmap,300,250,true);
             return resized;
         } catch (IOException e) {
             e.printStackTrace();
