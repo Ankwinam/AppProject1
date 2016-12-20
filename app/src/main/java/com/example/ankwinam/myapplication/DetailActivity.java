@@ -218,13 +218,13 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
         area.setText(walk_area);
         switch (walk_level){
             case "1" :
-                level.setImageResource();
+                level.setImageResource(R.drawable.star1);
                 break;
             case "2" :
-                level.setImageResource();
+                level.setImageResource(R.drawable.star2);
                 break;
             case "3" :
-                level.setImageResource();
+                level.setImageResource(R.drawable.star3);
                 break;
         }
 

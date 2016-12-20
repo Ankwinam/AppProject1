@@ -43,7 +43,7 @@
                     android:textSize="18sp" />
 
 
-                <TextView
+                <ImageView
                     android:text="area"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

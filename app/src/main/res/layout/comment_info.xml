@@ -16,7 +16,11 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10dp">
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/layer_border"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="3dp">
 
             <TextView
                 android:textColor="#111111"
@@ -25,7 +29,10 @@
                 android:layout_marginTop="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Large Text"
-                android:id="@+id/comment_info_id" />
+                android:id="@+id/comment_info_id"
+                android:gravity="end"
+                android:textStyle="normal|bold"
+                android:background="#8da8bf" />
 
             <TextView
                 android:textColor="#111111"

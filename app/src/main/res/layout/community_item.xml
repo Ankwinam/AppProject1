@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="2dp"
-                android:background="#b6d9b2"
+                android:background="#9abeb3"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp">
 
