@@ -99,7 +99,7 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
                 editor = pref.edit();
                 if(jjimOk == 0) {
                     Toast.makeText(getApplicationContext(), "찜하기 완성", Toast.LENGTH_SHORT).show();
-                    fab.setImageResource(R.drawable.cast_ic_notification_play);
+                    fab.setImageResource(R.mipmap.favorite_btn_after);
                     for (String r : temp) {
                         values.add(r);
                     }
@@ -119,7 +119,7 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
                     editor.commit();
                     jjimOk = 0;
                     Toast.makeText(getApplicationContext(), "찜제거 완성", Toast.LENGTH_SHORT).show();
-                    fab.setImageResource(R.drawable.cast_ic_notification_on);
+                    fab.setImageResource(R.mipmap.favorite_btn_before);
                     values.clear();
                 }
             }
@@ -158,7 +158,7 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
 
         for(String r : temp){
             if(r.equals(walk_name)){
-                fab.setImageResource(R.drawable.cast_ic_notification_play);
+                fab.setImageResource(R.mipmap.favorite_btn_after);
                 jjimOk = 1;
             }
         }

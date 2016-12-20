@@ -24,6 +24,7 @@ public class Community_item {
     String content;
     String date;
     String id;
+    int comment_num;
     private ImageLoadTask loadTask;
 
     Bitmap getImage(){
@@ -33,7 +34,7 @@ public class Community_item {
         return this.title;
     }
 
-    Community_item(String imageUrl, String title, String walk_name, String content, String date, String id){
+    Community_item(String imageUrl, String title, String walk_name, String content, String date, String id,int comment_num){
         this.imgUrl=imageUrl;
         this.title=title;
         this.walk_name = walk_name;
@@ -41,6 +42,7 @@ public class Community_item {
         this.content =content;
         this.date =date;
         this.id = id;
+        this.comment_num = comment_num;
         loadTask = new ImageLoadTask();
     }
 
@@ -95,7 +97,7 @@ public class Community_item {
             connection.connect();
             InputStream input = connection.getInputStream();
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            Bitmap resized = Bitmap.createScaledBitmap(myBitmap, 1200, 800, true);
+            Bitmap resized = Bitmap.createScaledBitmap(myBitmap, 1000, 800, true);
             return resized;
         } catch (IOException e) {
             e.printStackTrace();

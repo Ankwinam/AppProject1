@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +35,7 @@ public class CommunityActivity extends AppCompatActivity {
     ArrayList<Community_item> info_list;
     RecyclerView recyclerView;
     String walk_name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,12 +88,13 @@ public class CommunityActivity extends AppCompatActivity {
                 String content = c.getString("contents");
                 String date = c.getString("created_at");
                 String email = c.getString("id");
+                int comment_num = c.getInt("comment_num");
 
 //                Log.e("Check1",id);
 //                Log.e("Check2",url);
 //                Log.e("Check3",image_url);
 
-                Community_item data = new Community_item(image_url, id,walk_name,content,date,email);
+                Community_item data = new Community_item(image_url, id,walk_name,content,date,email,comment_num);
 
                 info_list.add(data);
             }
