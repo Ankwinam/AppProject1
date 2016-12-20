@@ -32,12 +32,9 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
     private FloatingActionButton fab;
     private MapPOIItem[] mPOIPoints = null;
     private MapPoint[] mPoints = null;
-    private MapPOIItem mDefaultMarker;
 
     private double[] yangjae_X;
     private double[] yangjae_Y;
-
-    private Location[] location;
 
     private double[] distance;
     private double[] time;
@@ -46,8 +43,6 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
     private int pinpoint[];
 
     private int controlcount = 0;
-
-    private static final MapPoint DEFAULT_MARKER_POINT = MapPoint.mapPointWithGeoCoord(37.473206, 127.035333);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,30 +65,18 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //현위치, 나침반 모드
-                //mapView.setCurrentLocationEventListener(this);
+                //현위치 모드
                 mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
                 Toast.makeText(MapActivity.this, "현재위치 찾는 중", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void createDefaultMarker(MapView mapView) {
-        mDefaultMarker = new MapPOIItem();
-        String name = "Default Marker";
-        mDefaultMarker.setItemName(name);
-        mDefaultMarker.setTag(0);
-        mDefaultMarker.setMapPoint(DEFAULT_MARKER_POINT);
-        mDefaultMarker.setMarkerType(MapPOIItem.MarkerType.BluePin);
-        mDefaultMarker.setSelectedMarkerType(MapPOIItem.MarkerType.RedPin);
-
-        mapView.addPOIItem(mDefaultMarker);
-        mapView.selectPOIItem(mDefaultMarker, true);
-        mapView.setMapCenterPoint(DEFAULT_MARKER_POINT, true);
-    }
-
     @Override
     public void onMapViewInitialized(final MapView mapView) {
+        if(mapView.getCurrentLocationTrackingMode() == MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading){
+            mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff); //현위치가 켜져 있으면 끄기
+        }
         // Using TedPermission library
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
@@ -140,13 +123,20 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
                 mPOIPoints = new MapPOIItem[10];
                 for(int i =1;i<=mPOIPoints.length;i++) {
                     mPOIPoints[i-1] = new MapPOIItem();
-                    mPOIPoints[i-1].setItemName("양재천 "+i);
+                    if(i==1)
+                        mPOIPoints[i-1].setItemName("양재천 출발지");
+                    else
+                        mPOIPoints[i-1].setItemName("양재천 "+i);
                     mPOIPoints[i-1].setTag(i-1);
                     mPOIPoints[i-1].setMapPoint(mPoints[i-1]);
                     mPOIPoints[i-1].setMarkerType(MapPOIItem.MarkerType.BluePin); //기본으로 제공하는 BluePin 마커 모양
-                    mPOIPoints[i-1].setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); //마커를 클릭했을때 기본으로 제공하는 RedPin 마커 모양
+                    if(i==1)
+                        mPOIPoints[i-1].setSelectedMarkerType(MapPOIItem.MarkerType.YellowPin);
+                    else
+                        mPOIPoints[i-1].setSelectedMarkerType(MapPOIItem.MarkerType.RedPin); //마커를 클릭했을때 기본으로 제공하는 RedPin 마커 모양
                     mapView.addPOIItem(mPOIPoints[i-1]);
                 }
+                mapView.selectPOIItem(mPOIPoints[0], true);
             }
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
@@ -180,14 +170,16 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         pinpoint[5]=19;pinpoint[6]=20;pinpoint[7]=22;pinpoint[8]=25;
 
         // Polyline 좌표 지정
-        if(controlcount == 0 && mPOIPoints[mapPOIItem.getTag()].getItemName().equals("양재천 "+1)){
+        if(controlcount == 0 && mPOIPoints[mapPOIItem.getTag()].getItemName().equals("양재천 출발지")){
             controlcount++;
         }
-        else if(controlcount == 10 && mPOIPoints[mapPOIItem.getTag()].getItemName().equals("양재천 "+1)){
+        else if(controlcount == 10 && mPOIPoints[mapPOIItem.getTag()].getItemName().equals("양재천 출발지")){
             for (int i = 0; i < yangjae_X.length; i++) {
                 polyline2.addPoint(MapPoint.mapPointWithGeoCoord(yangjae_Y[i], yangjae_X[i]));
             }
             controlcount++;
+        }
+        else {
         }
         for(int i = 0; i<9; i++){
             if(controlcount == i+1 && mPOIPoints[mapPOIItem.getTag()].getItemName().equals("양재천 "+(i+2))) {
@@ -197,16 +189,6 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
             }
         }
         mapView.addPolyline(polyline2); // Polyline 지도에 올리기.
-
-        //좌표를 계산하기 위한 객체 생성
-//                location = new Location[31];
-//                for(int i =0;i<location.length;i++) {
-//                    location[i] = new Location("point "+i);location[i].setLongitude(yangjae_Y[i]);location[i].setLatitude(yangjae_X[i]);
-//                }
-//                for(int i =0;i<location.length-1;i++) {
-//                    distance += (int) location[i].distanceTo(location[i+1]);
-//                }
-//                distance += (int) location[29].distanceTo(location[0]);
 
         //좌표를 계산하기 위한 객체 생성
         Location locationA = new Location("point A");locationA.setLongitude(yangjae_Y[0]);locationA.setLatitude(yangjae_X[0]);//핀마커
@@ -269,9 +251,15 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
         timesum_s = (timesum - (int)timesum) * 60;
 
         TextView distanceoutput = (TextView)findViewById(R.id.mapdistance);
-        distanceoutput.setText("총 남은 거리 : "+(int)distancesum+" m"
-                +"\n총 남은 예상 시간 : "+(int)timesum+"분 "+(int)timesum_s+"초"
-                +"\n다음 지점까지 "+(int)distance[mapPOIItem.getTag()]+" m 남음");
+        if(controlcount>=0 && controlcount<=10) {
+            distanceoutput.setText("총 남은 거리 : " + (int) distancesum + " m"
+                    + "\n총 남은 예상 시간 : " + (int) timesum + "분 " + (int) timesum_s + "초"
+                    + "\n다음 지점까지 " + (int) distance[mapPOIItem.getTag()] + " m 남음");
+        }
+        else{
+            distanceoutput.setText("코스 완주!");
+            Toast.makeText(MapActivity.this, "코스 완주!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
