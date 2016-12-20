@@ -77,8 +77,10 @@ public class CommunityHistoryActivity extends AppCompatActivity {
                 String content = c.getString("contents");
                 String date = c.getString("created_at");
                 String email = c.getString("id");
+                int comment_num = c.getInt("comment_num");
+                walk_name = c.getString("course_name");
 
-                Community_item data = new Community_item(image_url, id,walk_name,content,date,email);
+                Community_item data = new Community_item(image_url,id,walk_name,content,date,email,comment_num);
 
                 info_list.add(data);
             }

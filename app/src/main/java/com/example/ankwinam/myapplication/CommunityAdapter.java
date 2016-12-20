@@ -56,6 +56,7 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.View
                 context.startActivity(i);
             }
         });
+        holder.comment_num.setText(item.comment_num+"");
     }
 
     @Override
@@ -67,12 +68,14 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.View
         ImageView image;
         TextView title;
         CardView cardview;
+        TextView comment_num;
 
         public ViewHolder(View itemView) {
             super(itemView);
             image=(ImageView)itemView.findViewById(R.id.community_img);
             title=(TextView)itemView.findViewById(R.id.community_title);
             cardview=(CardView)itemView.findViewById(R.id.cardview);
+            comment_num = (TextView) itemView.findViewById(R.id.comment_little_number);
         }
     }
 }
