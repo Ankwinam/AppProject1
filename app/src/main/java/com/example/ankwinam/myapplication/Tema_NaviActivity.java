@@ -212,27 +212,27 @@ public class Tema_NaviActivity extends AppCompatActivity implements NavigationVi
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-//                    for(Walk_Info each : h_info_list){
-//                        each.cancel();
-//                    }
+
                     Intent intent = new Intent(getApplicationContext(), DetailActivity.class); // 다음넘어갈 화면
                     Walk_Info data = h_info_list.get(position);
-                    intent.putExtra("walk_name",data.walk_name);
-                    intent.putExtra("walk_level",data.level);
-                    intent.putExtra("walk_area",data.area);
-                    intent.putExtra("walk",data.walk);
-                    intent.putExtra("bicycle",data.bicycle);
-                    intent.putExtra("baby",data.baby);
-                    intent.putExtra("pet",data.pet);
+                    if (data.getImage() != null) {
+                        intent.putExtra("walk_name", data.walk_name);
+                        intent.putExtra("walk_level", data.level);
+                        intent.putExtra("walk_area", data.area);
+                        intent.putExtra("walk", data.walk);
+                        intent.putExtra("bicycle", data.bicycle);
+                        intent.putExtra("baby", data.baby);
+                        intent.putExtra("pet", data.pet);
 
-                    Bitmap sendBitmap = data.image;
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    byte[] byteArray = stream.toByteArray();
+                        Bitmap sendBitmap = data.image;
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        sendBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        byte[] byteArray = stream.toByteArray();
 
-                    intent.putExtra("walk_image",byteArray);
+                        intent.putExtra("walk_image", byteArray);
 
-                    startActivity(intent);
+                        startActivity(intent);
+                    }
                 }
             });
 

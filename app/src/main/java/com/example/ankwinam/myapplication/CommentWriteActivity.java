@@ -123,6 +123,7 @@ public class CommentWriteActivity  extends AppCompatActivity{
                 params.put("content",content);
                 params.put("email",email);
                 params.put("course",walk_name);
+                params.put("board_date",date);
 
                 //returning parameters
                 return params;
