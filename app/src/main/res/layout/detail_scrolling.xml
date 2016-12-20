@@ -8,17 +8,20 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/layer_border">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#dbdedb">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="8dp"
+                android:layout_margin="7dp"
                 android:orientation="vertical"
-                android:weightSum="1">
+                android:weightSum="1"
+                android:background="@drawable/layer_border">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -27,7 +30,8 @@
                     android:gravity="center"
                     android:textSize="30sp"
                     android:id="@+id/detail_name"
-                    android:text="name" />
+                    android:text="name"
+                    android:background="@drawable/layer_border"/>
 
                 <TextView
                     android:text="area"
@@ -51,7 +55,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_menu_camera"
+                    android:src="@drawable/ic_menu_camera"
                     android:id="@+id/detail_imageView"
                     android:layout_weight="0.07" />
 
@@ -96,9 +100,11 @@
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:weightSum="2">
+                    android:weightSum="2"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
 
                     <LinearLayout
                         android:orientation="horizontal"
@@ -110,12 +116,12 @@
                             android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_weight="1"
-                            android:layout_height="65dp">
+                            android:layout_height="60dp">
 
                             <ImageButton
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:srcCompat="@drawable/icon_before_walk"
+                                android:src="@drawable/icon_before_walk"
                                 android:id="@+id/icon_walk"
                                 android:adjustViewBounds="true"
                                 android:scaleType="fitXY"
@@ -129,12 +135,12 @@
                             android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_weight="1"
-                            android:layout_height="65dp">
+                            android:layout_height="60dp">
 
                             <ImageButton
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:srcCompat="@drawable/icon_before_bicycle"
+                                android:src="@drawable/icon_before_bicycle"
                                 android:id="@+id/icon_bicycle"
                                 android:adjustViewBounds="true"
                                 android:scaleType="fitXY"
@@ -148,12 +154,12 @@
                             android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_weight="1"
-                            android:layout_height="65dp">
+                            android:layout_height="60dp">
 
                             <ImageButton
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:srcCompat="@drawable/icon_before_dog"
+                                android:src="@drawable/icon_before_dog"
                                 android:id="@+id/icon_dog"
                                 android:adjustViewBounds="true"
                                 android:scaleType="fitXY"
@@ -166,12 +172,12 @@
                             android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_weight="1"
-                            android:layout_height="65dp">
+                            android:layout_height="60dp">
 
                             <ImageButton
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:srcCompat="@drawable/icon_before_baby"
+                                android:src="@drawable/icon_before_baby"
                                 android:id="@+id/icon_baby"
                                 android:adjustViewBounds="true"
                                 android:scaleType="fitXY"
@@ -231,14 +237,9 @@
                     android:text="@string/large_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/detail_Info" />
+                    android:id="@+id/detail_Info"
+                    android:layout_margin="10dp" />
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                </LinearLayout>
             </LinearLayout>
         </ScrollView>
         <android.support.design.widget.FloatingActionButton
