@@ -5,9 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,7 +103,7 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
                 Set<String> temp = pref.getStringSet("jjimset", new HashSet<String>());
                 editor = pref.edit();
                 if(jjimOk == 0) {
-                    Toast.makeText(getApplicationContext(), "찜하기 완성", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "찜하기", Toast.LENGTH_SHORT).show();
                     fab.setImageResource(R.mipmap.favorite_btn_after);
                     for (String r : temp) {
                         values.add(r);
@@ -118,7 +123,7 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
                     editor.putStringSet("jjimset", values);
                     editor.commit();
                     jjimOk = 0;
-                    Toast.makeText(getApplicationContext(), "찜제거 완성", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "찜 취소", Toast.LENGTH_SHORT).show();
                     fab.setImageResource(R.mipmap.favorite_btn_before);
                     values.clear();
                 }
@@ -243,6 +248,16 @@ public class DetailActivity extends AppCompatActivity /*implements MapView.MapVi
                     break;
                 }
             }
+
+            // 텍스트 뷰 가꼬와서
+// 사용 할 String 으로 스패너블 스트링 빌더를 만들어서
+            final SpannableStringBuilder sp = new SpannableStringBuilder(traffic_info);
+// ForegroundColorSpan(색상, 바꿀 시작 위치, 끝 위치, flag) 으로 색상 설정해주고
+            sp.setSpan(new ForegroundColorSpan(Color.RED), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            //sp.setSpan(new AbsoluteSizeSpan(30), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            //sp.setSpan(new ForegroundColorSpan(Color.rgb(81, 172, 169)), 61, 68, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+// 텍스트 뷰에 갖다붙이면 된다.
+            info.append(sp);
 
             info.setText(course + "\n\n" + traffic_info + "\n\n" + time + "\n\n<포인트별 상세정보>\n" + point_content + "\n");
         } catch (JSONException e) {
