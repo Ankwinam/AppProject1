@@ -74,9 +74,9 @@ public class MapActivity extends AppCompatActivity implements MapView.MapViewEve
 
     @Override
     public void onMapViewInitialized(final MapView mapView) {
-        if(mapView.getCurrentLocationTrackingMode() == MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading){
-            mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff); //현위치가 켜져 있으면 끄기
-        }
+//        if(mapView.getCurrentLocationTrackingMode() == MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading){
+//            mapView.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff); //현위치가 켜져 있으면 끄기
+//        }
         // Using TedPermission library
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
